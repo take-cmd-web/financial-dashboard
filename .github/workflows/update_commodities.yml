@@ -1,0 +1,36 @@
+name: Update Commodities
+
+on:
+  schedule:
+    # JST 05:00 = UTC 20:00 (前日)
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install yfinance pandas
+
+      - name: Fetch commodity data
+        run: python scripts/fetch_commodities.py
+
+      - name: Commit & push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data_commodities.json
+          git diff --cached --quiet || git commit -m "chore: update commodities data [skip ci]"
+          git push
