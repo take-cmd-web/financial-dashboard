@@ -42,9 +42,7 @@
     padding: 16px 28px 12px;
     border-bottom: 1px solid var(--border);
   }
-
   .header-left { display: flex; align-items: baseline; gap: 16px; }
-
   header h1 {
     font-family: 'Poppins', sans-serif;
     font-size: clamp(1.1rem, 3vw, 1.45rem);
@@ -53,14 +51,12 @@
     color: var(--text);
   }
   header h1 em { color: var(--accent); font-style: normal; }
-
   .breadcrumb { font-size: 12px; color: var(--muted); font-family: 'Poppins', sans-serif; }
   .breadcrumb a { color: var(--accent2); text-decoration: none; }
   .breadcrumb a:hover { text-decoration: underline; }
-
   #updated { font-size: 11px; color: var(--muted); font-family: 'Poppins', sans-serif; font-weight: 300; }
 
-  /* ── Range bar ── */
+  /* ── Overview range bar ── */
   .range-bar {
     display: flex;
     gap: 5px;
@@ -83,8 +79,9 @@
   .range-btn:hover { border-color: var(--accent); color: var(--accent); }
   .range-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-  /* ── Main content ── */
+  /* ── Content ── */
   .content { padding: 24px 28px; max-width: 1400px; margin: 0 auto; }
+  @media (max-width: 640px) { .content { padding: 16px; } }
 
   /* ── Overview card ── */
   .overview-card {
@@ -95,7 +92,6 @@
     padding: 20px 20px 16px;
     margin-bottom: 28px;
   }
-
   .overview-header {
     display: flex;
     align-items: center;
@@ -104,7 +100,6 @@
     gap: 10px;
     margin-bottom: 14px;
   }
-
   .overview-header h2 {
     font-family: 'Poppins', sans-serif;
     font-size: .75rem; font-weight: 500;
@@ -117,114 +112,100 @@
     width: 8px; height: 8px; border-radius: 2px;
     background: var(--accent); flex-shrink: 0;
   }
-
-  /* チェックボックス群 */
-  .ticker-toggles {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
+  .ticker-toggles { display: flex; flex-wrap: wrap; gap: 6px; }
   .toggle-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 4px 11px;
-    border-radius: 20px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    cursor: pointer;
-    user-select: none;
-    transition: all .15s;
-    font-family: 'Poppins', sans-serif;
-    font-size: 11px;
-    font-weight: 400;
-    color: var(--muted);
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 11px; border-radius: 20px;
+    border: 1px solid var(--border); background: var(--bg);
+    cursor: pointer; user-select: none; transition: all .15s;
+    font-family: 'Poppins', sans-serif; font-size: 11px;
+    font-weight: 400; color: var(--muted);
   }
   .toggle-chip:hover { border-color: var(--muted); color: var(--text); }
-  .toggle-chip.active {
-    color: #fff;
-    border-color: transparent;
-  }
-
-  .toggle-chip .chip-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    opacity: .85;
-  }
-
+  .toggle-chip.active { color: #fff; border-color: transparent; }
+  .toggle-chip .chip-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; opacity: .85; }
   .toggle-chip input { display: none; }
-
-  .overview-chart-wrap {
-    position: relative;
-    width: 100%;
-    height: 280px;
-  }
+  .overview-chart-wrap { position: relative; width: 100%; height: 280px; }
 
   /* ── Individual charts grid ── */
   .section-label {
     font-family: 'Poppins', sans-serif;
     font-size: 10px; font-weight: 500;
     text-transform: uppercase; letter-spacing: .09em;
-    color: var(--muted);
-    margin-bottom: 12px;
+    color: var(--muted); margin-bottom: 12px;
   }
-
   .charts-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
+  @media (max-width: 640px) { .charts-grid { grid-template-columns: 1fr; } }
 
-  @media (max-width: 640px) {
-    .charts-grid { grid-template-columns: 1fr; }
-    .content { padding: 16px; }
-  }
-
+  /* ── Individual chart card ── */
   .chart-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    padding: 16px 16px 12px;
+    padding: 14px 16px 12px;
   }
-
+  .chart-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
   .chart-card h3 {
     font-family: 'Poppins', sans-serif;
     font-size: .72rem; font-weight: 500;
     text-transform: uppercase; letter-spacing: .06em;
     color: var(--text);
-    margin-bottom: 10px;
     display: flex; align-items: center; gap: 7px;
+    flex-shrink: 0;
   }
-
   .chart-card h3 .card-dot {
     width: 8px; height: 8px;
     border-radius: 2px; flex-shrink: 0;
   }
-
-  .chart-card .last-val {
+  .card-right {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  }
+  .last-val {
     font-family: 'Poppins', sans-serif;
-    font-size: 13px; font-weight: 500;
+    font-size: 12px; font-weight: 500;
     color: var(--text);
-    margin-left: auto;
+    white-space: nowrap;
   }
 
+  /* 個別カード内の期間ボタン（小さめ） */
+  .card-range-bar {
+    display: flex; gap: 3px;
+  }
+  .card-range-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Poppins', sans-serif;
+    font-size: 10px; font-weight: 500;
+    padding: 2px 7px; border-radius: 20px;
+    cursor: pointer; transition: all .15s;
+    line-height: 1.4;
+  }
+  .card-range-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .card-range-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
   .chart-card .chart-wrap {
-    position: relative;
-    width: 100%;
-    height: 160px;
+    position: relative; width: 100%; height: 150px;
   }
 
   /* ── Footer ── */
   footer {
-    padding: 10px 28px;
-    border-top: 1px solid var(--border);
+    padding: 10px 28px; border-top: 1px solid var(--border);
     font-size: 10.5px; color: var(--muted);
     font-family: 'Poppins', sans-serif; font-weight: 300;
-    display: flex; flex-wrap: wrap; gap: 8px;
-    justify-content: space-between;
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between;
   }
 </style>
 </head>
@@ -239,7 +220,7 @@
 </header>
 
 <div class="range-bar">
-  <label>期間</label>
+  <label>オーバービュー期間</label>
   <button class="range-btn" data-months="6">6M</button>
   <button class="range-btn" data-months="12">1Y</button>
   <button class="range-btn" data-months="36">3Y</button>
@@ -272,36 +253,43 @@
 </footer>
 
 <script>
-// ── 銘柄定義（順序＝表示順） ─────────────────────────
+// ── 銘柄定義 ──────────────────────────────────────────
 const TICKERS = [
-  { name: "原油 (WTI)",  group: "エネルギー" },
-  { name: "天然ガス",    group: "エネルギー" },
-  { name: "銅",          group: "工業金属" },
-  { name: "金",          group: "貴金属" },
-  { name: "銀",          group: "貴金属" },
-  { name: "プラチナ",    group: "貴金属" },
+  { name: "原油 (WTI)",   group: "エネルギー" },
+  { name: "天然ガス",     group: "エネルギー" },
+  { name: "銅",           group: "工業金属" },
+  { name: "金",           group: "貴金属" },
+  { name: "銀",           group: "貴金属" },
+  { name: "プラチナ",     group: "貴金属" },
   { name: "トウモロコシ", group: "農産物" },
-  { name: "小麦",        group: "農産物" },
-  { name: "大豆",        group: "農産物" },
+  { name: "小麦",         group: "農産物" },
+  { name: "大豆",         group: "農産物" },
 ];
 
-// Claude カラーベース + 派生
 const PALETTE = [
-  "#d97757", "#c4603e", "#e8a882",  // orange 系
-  "#6a9bcc", "#4a7fae", "#92b8de",  // blue 系
-  "#788c5d", "#5a7243", "#9db87c",  // green 系
+  "#d97757","#c4603e","#e8a882",
+  "#6a9bcc","#4a7fae","#92b8de",
+  "#788c5d","#5a7243","#9db87c",
 ];
-
 const COLOR_MAP = Object.fromEntries(TICKERS.map((t, i) => [t.name, PALETTE[i]]));
 
-// ── 状態 ─────────────────────────────────────────────
-let allData     = {};
-let overviewChart = null;
-let indivCharts   = {};   // name → Chart
-let rangeMonths   = 0;
-let visibility    = Object.fromEntries(TICKERS.map(t => [t.name, true]));
+const RANGE_OPTIONS = [
+  { label: "6M", months: 6 },
+  { label: "1Y", months: 12 },
+  { label: "3Y", months: 36 },
+  { label: "5Y", months: 60 },
+  { label: "全", months: 0 },
+];
 
-// ── 日付フィルタ ───────────────────────────────────────
+// ── 状態 ─────────────────────────────────────────────
+let allData        = {};
+let overviewChart  = null;
+let indivCharts    = {};         // name → Chart
+let overviewMonths = 0;
+let indivMonths    = {};         // name → months（個別カードごと）
+let visibility     = Object.fromEntries(TICKERS.map(t => [t.name, true]));
+
+// ── ユーティリティ ────────────────────────────────────
 function filterByRange(series, months) {
   if (!months) return series;
   const cutoff = new Date();
@@ -309,8 +297,7 @@ function filterByRange(series, months) {
   return series.filter(([d]) => new Date(d) >= cutoff);
 }
 
-// ── Chart.js 共通オプション ────────────────────────────
-function baseOptions(height) {
+function baseOptions() {
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -351,51 +338,79 @@ function baseOptions(height) {
   };
 }
 
-// ── オーバービューチャート構築 ─────────────────────────
+// ── オーバービュー ─────────────────────────────────────
 function buildOverview() {
-  const datasets = TICKERS.map(({ name }) => {
-    const points = filterByRange(allData[name] || [], rangeMonths)
-      .map(([d, v]) => ({ x: d, y: v }));
-    return {
-      label: name,
-      data: points,
-      borderColor: COLOR_MAP[name],
-      backgroundColor: "transparent",
-      hidden: !visibility[name],
-    };
-  });
+  const datasets = TICKERS.map(({ name }) => ({
+    label: name,
+    data: filterByRange(allData[name] || [], overviewMonths).map(([d, v]) => ({ x: d, y: v })),
+    borderColor: COLOR_MAP[name],
+    backgroundColor: "transparent",
+    hidden: !visibility[name],
+  }));
 
   const ctx = document.getElementById("chart-overview").getContext("2d");
   if (overviewChart) overviewChart.destroy();
   overviewChart = new Chart(ctx, { type: "line", data: { datasets }, options: baseOptions() });
 }
 
-// ── 個別チャート構築 ───────────────────────────────────
+// ── 個別チャート（1枚更新） ────────────────────────────
+function updateIndivChart(name) {
+  const months = indivMonths[name];
+  const points = filterByRange(allData[name] || [], months).map(([d, v]) => ({ x: d, y: v }));
+  const chart  = indivCharts[name];
+  if (!chart) return;
+  chart.data.datasets[0].data = points;
+  chart.update();
+}
+
+// ── 個別チャートグリッド構築 ───────────────────────────
 function buildIndividual() {
   const grid = document.getElementById("charts-grid");
   grid.innerHTML = "";
   indivCharts = {};
 
-  TICKERS.forEach(({ name }, idx) => {
-    const color  = COLOR_MAP[name];
+  TICKERS.forEach(({ name }) => {
+    const color = COLOR_MAP[name];
     const series = allData[name] || [];
     const last   = series.at(-1);
+    indivMonths[name] = 0; // デフォルト：全期間
 
-    // カード要素
+    // カード
     const card = document.createElement("div");
     card.className = "chart-card";
+
+    // 期間ボタンHTML
+    const btnHtml = RANGE_OPTIONS.map(({ label, months }) =>
+      `<button class="card-range-btn${months === 0 ? ' active' : ''}" data-months="${months}">${label}</button>`
+    ).join("");
+
     card.innerHTML = `
-      <h3>
-        <span class="card-dot" style="background:${color}"></span>
-        ${name}
-        <span class="last-val">${last ? Number(last[1]).toLocaleString("ja-JP", { maximumFractionDigits: 2 }) : "—"}</span>
-      </h3>
-      <div class="chart-wrap"><canvas id="indiv-${idx}"></canvas></div>
+      <div class="chart-card-header">
+        <h3>
+          <span class="card-dot" style="background:${color}"></span>
+          ${name}
+        </h3>
+        <div class="card-right">
+          <span class="last-val">${last ? Number(last[1]).toLocaleString("ja-JP", { maximumFractionDigits: 2 }) : "—"}</span>
+          <div class="card-range-bar">${btnHtml}</div>
+        </div>
+      </div>
+      <div class="chart-wrap"><canvas></canvas></div>
     `;
     grid.appendChild(card);
 
+    // 期間ボタン イベント
+    card.querySelectorAll(".card-range-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        card.querySelectorAll(".card-range-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        indivMonths[name] = +btn.dataset.months;
+        updateIndivChart(name);
+      });
+    });
+
     // チャート描画
-    const points = filterByRange(series, rangeMonths).map(([d, v]) => ({ x: d, y: v }));
+    const points = filterByRange(series, 0).map(([d, v]) => ({ x: d, y: v }));
     const ctx    = card.querySelector("canvas").getContext("2d");
     indivCharts[name] = new Chart(ctx, {
       type: "line",
@@ -412,26 +427,23 @@ function buildIndividual() {
   });
 }
 
-// ── チェックチップ構築 ─────────────────────────────────
+// ── チェックチップ ─────────────────────────────────────
 function buildToggles() {
   const container = document.getElementById("ticker-toggles");
   container.innerHTML = "";
-
   TICKERS.forEach(({ name }) => {
     const color = COLOR_MAP[name];
     const chip  = document.createElement("label");
-    chip.className = "toggle-chip" + (visibility[name] ? " active" : "");
-    chip.style.background    = visibility[name] ? color : "";
-    chip.style.borderColor   = visibility[name] ? color : "";
+    chip.className = "toggle-chip active";
+    chip.style.background  = color;
+    chip.style.borderColor = color;
     chip.innerHTML = `
-      <input type="checkbox" ${visibility[name] ? "checked" : ""}>
-      <span class="chip-dot" style="background:${visibility[name] ? "#fff" : color}"></span>
+      <input type="checkbox" checked>
+      <span class="chip-dot" style="background:#fff"></span>
       ${name}
     `;
-
     chip.querySelector("input").addEventListener("change", e => {
       visibility[name] = e.target.checked;
-      // チップスタイル更新
       if (visibility[name]) {
         chip.classList.add("active");
         chip.style.background  = color;
@@ -443,25 +455,22 @@ function buildToggles() {
         chip.style.borderColor = "";
         chip.querySelector(".chip-dot").style.background = color;
       }
-      // オーバービューのデータセットを toggle
       if (overviewChart) {
         const ds = overviewChart.data.datasets.find(d => d.label === name);
         if (ds) { ds.hidden = !visibility[name]; overviewChart.update(); }
       }
     });
-
     container.appendChild(chip);
   });
 }
 
-// ── 期間ボタン ────────────────────────────────────────
+// ── オーバービュー期間ボタン ───────────────────────────
 document.querySelectorAll(".range-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".range-btn").forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
-    rangeMonths = +btn.dataset.months;
+    overviewMonths = +btn.dataset.months;
     buildOverview();
-    buildIndividual();
   });
 });
 
