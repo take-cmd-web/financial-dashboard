@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #faf9f5;
+    --surface:   #f0ede6;
+    --border:    #e8e6dc;
+    --accent:    #d97757;
+    --accent2:   #6a9bcc;
+    --accent3:   #788c5d;
+    --text:      #141413;
+    --muted:     #b0aea5;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Lora', Georgia, serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 20px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  header h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.6rem, 5vw, 2.4rem);
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -.02em;
+    margin-bottom: 8px;
+  }
+
+  header h1 em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 13px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 260px));
+    gap: 16px;
+    justify-content: center;
+    width: 100%;
+    max-width: 860px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 22px 20px;
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color .2s, box-shadow .2s, transform .2s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 16px rgba(217,119,87,.12);
+    transform: translateY(-2px);
+  }
+
+  .card-icon {
+    font-size: 26px;
+    margin-bottom: 2px;
+  }
+
+  .card-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -.01em;
+  }
+
+  .card-desc {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.55;
+    font-family: 'Lora', serif;
+  }
+
+  .card-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2px 9px;
+    color: var(--muted);
+    margin-top: 4px;
+    width: fit-content;
+  }
+
+  /* アクセントカラーをカードごとに */
+  .card:nth-child(1) .card-title { color: var(--accent); }
+  .card:nth-child(2) .card-title { color: var(--accent2); }
+  .card:nth-child(3) .card-title { color: var(--accent3); }
+
+  footer {
+    margin-top: 52px;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Financial <em>Dashboard</em></h1>
+  <p>毎朝5時（JST）自動更新 ／ GitHub Actions + Cloudflare Pages</p>
+</header>
+
+<div class="grid">
+
+  <a class="card" href="commodities.html">
+    <div class="card-icon">🛢️</div>
+    <div class="card-title">コモディティ</div>
+    <div class="card-desc">原油・天然ガス・貴金属・農産物の先物価格推移</div>
+    <span class="card-tag">日足 / Yahoo Finance</span>
+  </a>
+
+  <!-- 追加カテゴリはここに card を追加 -->
+  <!--
+  <a class="card" href="policy_rates.html">
+    <div class="card-icon">🏦</div>
+    <div class="card-title">政策金利</div>
+    <div class="card-desc">主要中銀の政策金利推移</div>
+    <span class="card-tag">週足 / TradingView</span>
+  </a>
+
+  <a class="card" href="equities.html">
+    <div class="card-icon">📈</div>
+    <div class="card-title">株価指数</div>
+    <div class="card-desc">S&P500・日経・DAX ほか</div>
+    <span class="card-tag">日足 / Yahoo Finance</span>
+  </a>
+  -->
+
+</div>
+
+<footer>
+  © take-cmd-web ／ データは参考目的のみ。投資判断の根拠としないでください。
+</footer>
+
+</body>
+</html>
