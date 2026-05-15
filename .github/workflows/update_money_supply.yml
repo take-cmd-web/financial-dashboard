@@ -21,19 +21,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Cache pip packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-money-supply-${{ hashFiles('**/requirements*.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-money-supply-
-
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install pandas
-          pip install git+https://github.com/StreamAlpha/tvdatafeed.git
+          pip install pandas requests
+          pip install --no-deps tvdatafeed || \
+          pip install pandas requests websocket-client && \
+          pip install https://github.com/StreamAlpha/tvdatafeed/archive/refs/heads/main.zip
 
       - name: Fetch money supply data
         env:
