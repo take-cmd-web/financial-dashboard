@@ -46,9 +46,7 @@
   header h1 {
     font-family: 'Poppins', sans-serif;
     font-size: clamp(1.1rem, 3vw, 1.45rem);
-    font-weight: 600;
-    letter-spacing: -.01em;
-    color: var(--text);
+    font-weight: 600; letter-spacing: -.01em; color: var(--text);
   }
   header h1 em { color: var(--accent); font-style: normal; }
   .breadcrumb { font-size: 12px; color: var(--muted); font-family: 'Poppins', sans-serif; }
@@ -58,12 +56,9 @@
 
   /* ── Overview range bar ── */
   .range-bar {
-    display: flex;
-    gap: 5px;
-    padding: 9px 28px;
+    display: flex; gap: 5px; padding: 9px 28px;
     border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-    align-items: center;
+    flex-wrap: wrap; align-items: center;
   }
   .range-bar label {
     font-size: 10px; color: var(--muted);
@@ -85,32 +80,29 @@
 
   /* ── Overview card ── */
   .overview-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 20px 20px 16px;
-    margin-bottom: 28px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    padding: 20px 20px 16px; margin-bottom: 28px;
   }
   .overview-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 6px;
   }
   .overview-header h2 {
     font-family: 'Poppins', sans-serif;
     font-size: .75rem; font-weight: 500;
-    text-transform: uppercase; letter-spacing: .07em;
-    color: var(--text);
+    text-transform: uppercase; letter-spacing: .07em; color: var(--text);
     display: flex; align-items: center; gap: 8px;
   }
   .overview-header h2::before {
     content: ''; display: inline-block;
     width: 8px; height: 8px; border-radius: 2px;
     background: var(--accent); flex-shrink: 0;
+  }
+  .overview-note {
+    font-size: 10.5px; color: var(--muted);
+    font-family: 'Poppins', sans-serif; font-weight: 300;
+    margin-bottom: 10px;
   }
   .ticker-toggles { display: flex; flex-wrap: wrap; gap: 6px; }
   .toggle-chip {
@@ -135,70 +127,42 @@
     color: var(--muted); margin-bottom: 12px;
   }
   .charts-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
   }
   @media (max-width: 640px) { .charts-grid { grid-template-columns: 1fr; } }
 
   /* ── Individual chart card ── */
   .chart-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
     padding: 14px 16px 12px;
   }
   .chart-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    gap: 8px;
-    flex-wrap: wrap;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px; gap: 8px; flex-wrap: wrap;
   }
   .chart-card h3 {
     font-family: 'Poppins', sans-serif;
     font-size: .72rem; font-weight: 500;
-    text-transform: uppercase; letter-spacing: .06em;
-    color: var(--text);
-    display: flex; align-items: center; gap: 7px;
-    flex-shrink: 0;
+    text-transform: uppercase; letter-spacing: .06em; color: var(--text);
+    display: flex; align-items: center; gap: 7px; flex-shrink: 0;
   }
-  .chart-card h3 .card-dot {
-    width: 8px; height: 8px;
-    border-radius: 2px; flex-shrink: 0;
-  }
-  .card-right {
-    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-  }
+  .chart-card h3 .card-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+  .card-right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .last-val {
     font-family: 'Poppins', sans-serif;
-    font-size: 12px; font-weight: 500;
-    color: var(--text);
-    white-space: nowrap;
+    font-size: 12px; font-weight: 500; color: var(--text); white-space: nowrap;
   }
-
-  /* 個別カード内の期間ボタン（小さめ） */
-  .card-range-bar {
-    display: flex; gap: 3px;
-  }
+  .card-range-bar { display: flex; gap: 3px; }
   .card-range-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'Poppins', sans-serif;
-    font-size: 10px; font-weight: 500;
-    padding: 2px 7px; border-radius: 20px;
-    cursor: pointer; transition: all .15s;
-    line-height: 1.4;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); font-family: 'Poppins', sans-serif;
+    font-size: 10px; font-weight: 500; padding: 2px 7px;
+    border-radius: 20px; cursor: pointer; transition: all .15s; line-height: 1.4;
   }
   .card-range-btn:hover { border-color: var(--accent); color: var(--accent); }
   .card-range-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-
-  .chart-card .chart-wrap {
-    position: relative; width: 100%; height: 150px;
-  }
+  .chart-card .chart-wrap { position: relative; width: 100%; height: 150px; }
 
   /* ── Footer ── */
   footer {
@@ -221,21 +185,22 @@
 
 <div class="range-bar">
   <label>オーバービュー期間</label>
-  <button class="range-btn" data-months="6">6M</button>
+  <button class="range-btn" data-months="6" class="active">6M</button>
   <button class="range-btn" data-months="12">1Y</button>
   <button class="range-btn" data-months="36">3Y</button>
   <button class="range-btn" data-months="60">5Y</button>
-  <button class="range-btn active" data-months="0">全期間</button>
+  <button class="range-btn" data-months="0">全期間</button>
 </div>
 
 <div class="content">
 
-  <!-- ① 全銘柄オーバービュー -->
+  <!-- ① 全銘柄オーバービュー（起点100） -->
   <div class="overview-card">
     <div class="overview-header">
       <h2>全銘柄オーバービュー</h2>
       <div class="ticker-toggles" id="ticker-toggles"></div>
     </div>
+    <div class="overview-note">期間開始時点を 100 として正規化</div>
     <div class="overview-chart-wrap">
       <canvas id="chart-overview"></canvas>
     </div>
@@ -278,18 +243,20 @@ const RANGE_OPTIONS = [
   { label: "1Y", months: 12 },
   { label: "3Y", months: 36 },
   { label: "5Y", months: 60 },
-  { label: "全", months: 0 },
+  { label: "全",  months: 0 },
 ];
 
 // ── 状態 ─────────────────────────────────────────────
-let allData        = {};
-let overviewChart  = null;
-let indivCharts    = {};         // name → Chart
-let overviewMonths = 0;
-let indivMonths    = {};         // name → months（個別カードごと）
+let allData       = {};
+let overviewChart = null;
+let indivCharts   = {};
+let overviewMonths = 6;   // 初期：6M
+let indivMonths    = {};  // name → months
 let visibility     = Object.fromEntries(TICKERS.map(t => [t.name, true]));
 
 // ── ユーティリティ ────────────────────────────────────
+
+// 月数でフィルタ（0=全期間）
 function filterByRange(series, months) {
   if (!months) return series;
   const cutoff = new Date();
@@ -297,7 +264,15 @@ function filterByRange(series, months) {
   return series.filter(([d]) => new Date(d) >= cutoff);
 }
 
-function baseOptions() {
+// 起点100に正規化（最初のデータ点を基準）
+function normalize(series) {
+  if (!series.length) return [];
+  const base = series[0][1];
+  if (!base) return series.map(([d]) => ({ x: d, y: null }));
+  return series.map(([d, v]) => ({ x: d, y: Math.round((v / base) * 10000) / 100 }));
+}
+
+function baseOptions(isNormalized = false) {
   return {
     responsive: true,
     maintainAspectRatio: false,
@@ -309,6 +284,9 @@ function baseOptions() {
         borderColor: "#e8e6dc", borderWidth: 1,
         titleColor: "#b0aea5", bodyColor: "#141413",
         padding: 10,
+        callbacks: isNormalized ? {
+          label: ctx => ` ${ctx.dataset.label}：${ctx.parsed.y?.toFixed(1)}`,
+        } : {},
       },
     },
     scales: {
@@ -328,6 +306,7 @@ function baseOptions() {
           color: "#b0aea5",
           font: { family: "'Poppins', sans-serif", size: 10 },
           maxTicksLimit: 5,
+          callback: isNormalized ? v => v.toFixed(0) : undefined,
         },
       },
     },
@@ -338,19 +317,31 @@ function baseOptions() {
   };
 }
 
-// ── オーバービュー ─────────────────────────────────────
+// ── オーバービュー（正規化） ───────────────────────────
 function buildOverview() {
-  const datasets = TICKERS.map(({ name }) => ({
-    label: name,
-    data: filterByRange(allData[name] || [], overviewMonths).map(([d, v]) => ({ x: d, y: v })),
-    borderColor: COLOR_MAP[name],
-    backgroundColor: "transparent",
-    hidden: !visibility[name],
-  }));
+  // アクティブボタン更新
+  document.querySelectorAll(".range-btn").forEach(b => {
+    b.classList.toggle("active", +b.dataset.months === overviewMonths);
+  });
+
+  const datasets = TICKERS.map(({ name }) => {
+    const filtered = filterByRange(allData[name] || [], overviewMonths);
+    return {
+      label: name,
+      data: normalize(filtered),
+      borderColor: COLOR_MAP[name],
+      backgroundColor: "transparent",
+      hidden: !visibility[name],
+    };
+  });
 
   const ctx = document.getElementById("chart-overview").getContext("2d");
   if (overviewChart) overviewChart.destroy();
-  overviewChart = new Chart(ctx, { type: "line", data: { datasets }, options: baseOptions() });
+  overviewChart = new Chart(ctx, {
+    type: "line",
+    data: { datasets },
+    options: baseOptions(true),
+  });
 }
 
 // ── 個別チャート（1枚更新） ────────────────────────────
@@ -370,18 +361,16 @@ function buildIndividual() {
   indivCharts = {};
 
   TICKERS.forEach(({ name }) => {
-    const color = COLOR_MAP[name];
+    const color  = COLOR_MAP[name];
     const series = allData[name] || [];
     const last   = series.at(-1);
-    indivMonths[name] = 0; // デフォルト：全期間
+    indivMonths[name] = 6; // 初期：6M
 
-    // カード
     const card = document.createElement("div");
     card.className = "chart-card";
 
-    // 期間ボタンHTML
     const btnHtml = RANGE_OPTIONS.map(({ label, months }) =>
-      `<button class="card-range-btn${months === 0 ? ' active' : ''}" data-months="${months}">${label}</button>`
+      `<button class="card-range-btn${months === 6 ? ' active' : ''}" data-months="${months}">${label}</button>`
     ).join("");
 
     card.innerHTML = `
@@ -409,8 +398,8 @@ function buildIndividual() {
       });
     });
 
-    // チャート描画
-    const points = filterByRange(series, 0).map(([d, v]) => ({ x: d, y: v }));
+    // 初期描画（6M）
+    const points = filterByRange(series, 6).map(([d, v]) => ({ x: d, y: v }));
     const ctx    = card.querySelector("canvas").getContext("2d");
     indivCharts[name] = new Chart(ctx, {
       type: "line",
@@ -422,7 +411,7 @@ function buildIndividual() {
           backgroundColor: color + "18",
         }],
       },
-      options: baseOptions(),
+      options: baseOptions(false),
     });
   });
 }
@@ -467,8 +456,6 @@ function buildToggles() {
 // ── オーバービュー期間ボタン ───────────────────────────
 document.querySelectorAll(".range-btn").forEach(btn => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".range-btn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
     overviewMonths = +btn.dataset.months;
     buildOverview();
   });
