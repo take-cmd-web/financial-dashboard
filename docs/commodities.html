@@ -263,6 +263,7 @@ const RANGE_OPTIONS = [
 
 // ── 状態 ─────────────────────────────────────────────
 let allData       = {};
+let gscpiData     = [];  // NYFed GSCPI
 let overviewChart = null;
 let indivCharts   = {};
 let overviewMonths = 6;   // 初期：6M
@@ -371,9 +372,10 @@ function buildOverview() {
 
 // ── 個別チャート（1枚更新） ────────────────────────────
 function updateIndivChart(name) {
-  const months = indivMonths[name];
-  const points = filterByRange(allData[name] || [], months).map(([d, v]) => ({ x: d, y: v }));
-  const chart  = indivCharts[name];
+  const months  = indivMonths[name];
+  const source  = name === "GSCPI" ? gscpiData : (allData[name] || []);
+  const points  = filterByRange(source, months).map(([d, v]) => ({ x: d, y: v }));
+  const chart   = indivCharts[name];
   if (!chart) return;
   chart.data.datasets[0].data = points;
   chart.update();
@@ -439,6 +441,65 @@ function buildIndividual() {
       options: baseOptions(false),
     });
   });
+
+  // ── GSCPI カード（末尾に追加） ────────────────────────
+  buildGscpiCard();
+}
+
+// ── GSCPIカード独立ビルド ──────────────────────────────
+function buildGscpiCard() {
+  const grid   = document.getElementById("charts-grid");
+  const name   = "GSCPI";
+  const color  = "#788c5d";  // accent3 グリーン
+  const series = gscpiData;
+  const last   = series.at(-1);
+  indivMonths[name] = 6;
+
+  const card = document.createElement("div");
+  card.className = "chart-card";
+
+  const btnHtml = RANGE_OPTIONS.map(({ label, months }) =>
+    `<button class="card-range-btn${months === 6 ? ' active' : ''}" data-months="${months}">${label}</button>`
+  ).join("");
+
+  card.innerHTML = `
+    <div class="chart-card-header">
+      <h3>
+        <span class="card-dot" style="background:${color}"></span>
+        グローバルSC圧力指数 (GSCPI)
+      </h3>
+      <div class="card-right">
+        <span class="last-val">${last ? Number(last[1]).toLocaleString("ja-JP", { maximumFractionDigits: 2 }) : "—"}</span>
+        <div class="card-range-bar">${btnHtml}</div>
+      </div>
+    </div>
+    <div class="chart-wrap"><canvas></canvas></div>
+  `;
+  grid.appendChild(card);
+
+  card.querySelectorAll(".card-range-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      card.querySelectorAll(".card-range-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      indivMonths[name] = +btn.dataset.months;
+      updateIndivChart(name);
+    });
+  });
+
+  const points = filterByRange(series, 6).map(([d, v]) => ({ x: d, y: v }));
+  const ctx    = card.querySelector("canvas").getContext("2d");
+  indivCharts[name] = new Chart(ctx, {
+    type: "line",
+    data: {
+      datasets: [{
+        label: name,
+        data: points,
+        borderColor: color,
+        backgroundColor: color + "18",
+      }],
+    },
+    options: baseOptions(false),
+  });
 }
 
 // ── チェックチップ ─────────────────────────────────────
@@ -490,11 +551,20 @@ document.querySelectorAll(".range-btn").forEach(btn => {
 // ── 初期化 ────────────────────────────────────────────
 async function init() {
   try {
-    const res  = await fetch("data_commodities.json");
-    const json = await res.json();
-    allData = json.data || {};
+    const [commRes, gscpiRes] = await Promise.all([
+      fetch("data_commodities.json"),
+      fetch("data_gscpi.json").catch(() => null),
+    ]);
 
-    const ts = new Date(json.generated_at);
+    const commJson = await commRes.json();
+    allData = commJson.data || {};
+
+    if (gscpiRes && gscpiRes.ok) {
+      const gscpiJson = await gscpiRes.json();
+      gscpiData = (gscpiJson.data || {})["GSCPI"] || [];
+    }
+
+    const ts = new Date(commJson.generated_at);
     document.getElementById("updated").textContent =
       "最終更新：" + ts.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" }) + " JST";
 

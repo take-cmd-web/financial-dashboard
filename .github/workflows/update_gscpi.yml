@@ -1,0 +1,36 @@
+name: Update GSCPI
+
+on:
+  schedule:
+    # JST 05:00 = UTC 20:00（毎日、NY連銀は月次更新だが毎日チェック）
+    - cron: "0 20 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests pandas openpyxl
+
+      - name: Fetch GSCPI data
+        run: python scripts/fetch_gscpi.py
+
+      - name: Commit & push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data_gscpi.json
+          git diff --cached --quiet || git commit -m "chore: update GSCPI data [skip ci]"
+          git push
