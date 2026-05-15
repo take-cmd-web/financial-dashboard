@@ -21,8 +21,6 @@
   --text:    #141413;
   --muted:   #b0aea5;
   --radius:  8px;
-
-  /* チャート用カラーパレット（16銘柄＋Global） */
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,7 +34,6 @@ body {
   min-height: 100vh;
 }
 
-/* ── ヘッダー ── */
 .header {
   padding: 32px 24px 0;
   max-width: 1400px;
@@ -68,14 +65,12 @@ body {
   margin-top: 4px;
 }
 
-/* ── メインコンテナ ── */
 .main {
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px 24px 48px;
 }
 
-/* ── セクション共通 ── */
 .section {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -93,7 +88,6 @@ body {
   margin-bottom: 14px;
 }
 
-/* ── 期間ボタン ── */
 .period-btns {
   display: flex;
   gap: 4px;
@@ -118,13 +112,6 @@ body {
   color: #fff;
 }
 
-/* ── トップチャート ── */
-.top-chart-wrap {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
 .top-chart-controls {
   display: flex;
   align-items: center;
@@ -139,7 +126,6 @@ body {
   height: 360px;
 }
 
-/* ── 表 ── */
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -200,12 +186,6 @@ body {
   color: var(--muted);
   margin-left: 2px;
 }
-.date-cell {
-  font-family: 'Poppins', sans-serif;
-  font-size: 12px;
-  color: var(--muted);
-  text-align: right;
-}
 .change-cell {
   font-family: 'Poppins', sans-serif;
   font-size: 12px;
@@ -215,7 +195,6 @@ body {
 .change-pos { color: var(--accent3); }
 .change-neg { color: #e05252; }
 
-/* チェックボックス */
 .cb-cell { text-align: center; }
 .cb-wrap {
   display: inline-flex;
@@ -236,7 +215,6 @@ body {
 .cb-wrap svg { display: none; }
 .cb-wrap.checked svg { display: block; }
 
-/* ── 個別チャートグリッド ── */
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -294,7 +272,6 @@ body {
   height: 180px;
 }
 
-/* ── フッター ── */
 .footer {
   text-align: center;
   padding: 20px 24px;
@@ -306,7 +283,6 @@ body {
   margin: 0 auto;
 }
 
-/* ── ローディング ── */
 .loading {
   display: flex;
   align-items: center;
@@ -326,7 +302,6 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── エラー ── */
 .error-msg {
   text-align: center;
   padding: 40px;
@@ -335,7 +310,6 @@ body {
   font-style: italic;
 }
 
-/* スマホ対応 */
 @media (max-width: 600px) {
   .main { padding: 16px 12px 40px; }
   .header { padding: 20px 12px 0; }
@@ -356,7 +330,6 @@ body {
 
 <div class="main">
 
-  <!-- ── トップ：比較チャート ── -->
   <div class="section" id="topSection">
     <div class="top-chart-controls">
       <div class="section-title" style="margin-bottom:0">主要9カ国 積み上げ＋合計（USD換算）</div>
@@ -373,7 +346,6 @@ body {
     </div>
   </div>
 
-  <!-- ── 表 ── -->
   <div class="section" id="tableSection" style="display:none">
     <div class="section-title">直近の値（月次）</div>
     <div style="overflow-x:auto">
@@ -392,7 +364,6 @@ body {
     </div>
   </div>
 
-  <!-- ── 個別チャートグリッド ── -->
   <div id="chartsGrid" class="charts-grid" style="display:none"></div>
 
 </div>
@@ -402,20 +373,8 @@ body {
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════════
-//  設定
-// ══════════════════════════════════════════════════════════
 const DATA_URL = 'data_money_supply.json';
 
-// 為替レート（各通貨→USD）: 月次取得が理想だが、ここでは代表レートをハードコード
-// 実際のデータは各国通貨建てのため、USD換算に使用
-// ※ EUM2はすでにEUR建て（ECBデータ）なのでEURUSDを掛ける
-// ※ USM2はUSD建てなのでレート=1
-// ※ CNM2はCNY建てなのでCNYUSDを掛ける
-// これらは概算値。精度を上げるには別途FX系列を取得する必要がある。
-// data_money_supply.jsonにfx_ratesフィールドがあれば優先使用する。
-
-// フォールバック用の固定レート（2024年末頃の概算）
 const FX_FALLBACK = {
   USD: 1,
   CNY: 0.1385,
@@ -423,8 +382,8 @@ const FX_FALLBACK = {
   JPY: 0.00667,
   GBP: 1.27,
   KRW: 0.000735,
-  CAD: 0.738,
   AUD: 0.645,
+  CAD: 0.738,
   RUB: 0.01095,
   BRL: 0.172,
   MXN: 0.0495,
@@ -436,23 +395,22 @@ const FX_FALLBACK = {
   ARS: 0.00098,
 };
 
+// 順番変更：英国、韓国、豪州、カナダ、ロシア、ブラジル
 const TICKERS_INFO = [
-  { ticker:'CNM2', label:'中国',   currency:'CNY' },
-  { ticker:'USM2', label:'米国',   currency:'USD' },
-  { ticker:'EUM2', label:'EU',     currency:'EUR' },
-  { ticker:'JPM2', label:'日本',   currency:'JPY' },
-  { ticker:'GBM2', label:'英国',   currency:'GBP' },
-  { ticker:'CAM2', label:'カナダ', currency:'CAD' },
-  { ticker:'AUM3', label:'豪州',   currency:'AUD' },
-  { ticker:'KRM2', label:'韓国',   currency:'KRW' },
-  { ticker:'RUM2', label:'ロシア', currency:'RUB' },
+  { ticker:'CNM2', label:'中国',     currency:'CNY' },
+  { ticker:'USM2', label:'米国',     currency:'USD' },
+  { ticker:'EUM2', label:'EU',       currency:'EUR' },
+  { ticker:'JPM2', label:'日本',     currency:'JPY' },
+  { ticker:'GBM2', label:'英国',     currency:'GBP' },
+  { ticker:'KRM2', label:'韓国',     currency:'KRW' },
+  { ticker:'AUM3', label:'豪州',     currency:'AUD' },
+  { ticker:'CAM2', label:'カナダ',   currency:'CAD' },
+  { ticker:'RUM2', label:'ロシア',   currency:'RUB' },
   { ticker:'BRM2', label:'ブラジル', currency:'BRL' },
 ];
 
-// トップチャートの積み上げ対象（全9カ国）
-const STACK_TICKERS = ['CNM2','USM2','EUM2','JPM2','GBM2','CAM2','AUM3','KRM2','RUM2','BRM2'];
+const STACK_TICKERS = ['CNM2','USM2','EUM2','JPM2','GBM2','KRM2','AUM3','CAM2','RUM2','BRM2'];
 
-// チャートカラー（9カ国＋合計）
 const COLORS = [
   '#d97757', // 合計
   '#e05252', // CNM2 中国
@@ -460,44 +418,37 @@ const COLORS = [
   '#f5a623', // EUM2 EU
   '#788c5d', // JPM2 日本
   '#1abc9c', // GBM2 英国
-  '#9b59b6', // CAM2 カナダ
-  '#e67e22', // AUM3 豪州
   '#3498db', // KRM2 韓国
+  '#e67e22', // AUM3 豪州
+  '#9b59b6', // CAM2 カナダ
   '#c0392b', // RUM2 ロシア
   '#27ae60', // BRM2 ブラジル
 ];
 const GLOBAL_COLOR = '#d97757';
 
-// 積み上げ用カラー（全9カ国）
 const STACK_COLORS = {
   CNM2: '#e05252',
   USM2: '#6a9bcc',
   EUM2: '#f5a623',
   JPM2: '#788c5d',
   GBM2: '#1abc9c',
-  CAM2: '#9b59b6',
-  AUM3: '#e67e22',
   KRM2: '#3498db',
+  AUM3: '#e67e22',
+  CAM2: '#9b59b6',
   RUM2: '#c0392b',
   BRM2: '#27ae60',
 };
 
-// ══════════════════════════════════════════════════════════
-//  状態
-// ══════════════════════════════════════════════════════════
 var rawData    = null;
-var seriesData = {};     // ticker → [{x: Date, y: number}] (各国通貨建て)
-var seriesUSD  = {};     // ticker → [{x: Date, y: number}] (USD換算済み)
-var fxRates    = {};     // currency → USD rate
+var seriesData = {};
+var seriesUSD  = {};
+var fxRates    = {};
 var visibility = {};
 var topPeriod  = '10y';
 var cardPeriod = {};
 var topChartInst = null;
 var cardCharts   = {};
 
-// ══════════════════════════════════════════════════════════
-//  ユーティリティ
-// ══════════════════════════════════════════════════════════
 function periodToDate(p) {
   const now = new Date();
   if (p === '1y')  return new Date(now.getFullYear()-1,  now.getMonth(), 1);
@@ -513,17 +464,7 @@ function formatT(v) {
   return v.toFixed(0);
 }
 
-function formatDate(dateStr) {
-  if (!dateStr) return '—';
-  const d = new Date(dateStr);
-  return d.getFullYear() + '年' + String(d.getMonth()+1).padStart(2,'0') + '月';
-}
-
-// ══════════════════════════════════════════════════════════
-//  データ処理
-// ══════════════════════════════════════════════════════════
 function processData(json) {
-  // FXレート決定：JSONにfx_ratesがあれば使用、なければフォールバック
   const storedFX = json.meta?.fx_rates || {};
   TICKERS_INFO.forEach(info => {
     fxRates[info.currency] = storedFX[info.currency] ?? FX_FALLBACK[info.currency] ?? 1;
@@ -538,7 +479,6 @@ function processData(json) {
       x: new Date(d), y: v
     })).sort((a,b) => a.x - b.x);
 
-    // USD換算済みシリーズ
     seriesUSD[info.ticker] = seriesData[info.ticker].map(pt => ({
       x: pt.x, y: pt.y * fx
     }));
@@ -546,15 +486,12 @@ function processData(json) {
     visibility[info.ticker] = true;
   });
 
-  // 合計 = 全銘柄のUSD換算合計（forward fill: データ欠損月は直前値を使用）
-  // 月キーをYYYY-MM形式で統一（ローカル時刻基準でずれないよう文字列から生成）
   function toMonthKey(dateOrStr) {
     if (typeof dateOrStr === 'string') return dateOrStr.slice(0,7);
     const d = dateOrStr;
     return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
   }
 
-  // 各銘柄の月→値マップを先に作成（O(n)）
   const tickerMonthMap = {};
   TICKERS_INFO.forEach(info => {
     tickerMonthMap[info.ticker] = {};
@@ -563,14 +500,12 @@ function processData(json) {
     });
   });
 
-  // 全月リストを生成してソート
   const allMonths = new Set();
   TICKERS_INFO.forEach(info => {
     Object.keys(tickerMonthMap[info.ticker]).forEach(m => allMonths.add(m));
   });
   const sortedMonths = Array.from(allMonths).sort();
 
-  // forward fill: 各銘柄で欠損月に直前値を補完
   const filledMap = {};
   TICKERS_INFO.forEach(info => {
     filledMap[info.ticker] = {};
@@ -582,7 +517,6 @@ function processData(json) {
     });
   });
 
-  // 月ごとに合計（8カ国以上揃っている月のみ）
   seriesUSD['GLOBAL'] = sortedMonths
     .map(month => {
       let sum = 0;
@@ -591,7 +525,7 @@ function processData(json) {
         const v = filledMap[info.ticker][month];
         if (v != null) { sum += v; cnt++; }
       });
-      return { x: new Date(month + '-02'), y: sum, cnt }; // -02で UTC→JST ずれ回避
+      return { x: new Date(month + '-02'), y: sum, cnt };
     })
     .filter(p => p.cnt >= 8)
     .map(p => ({ x: p.x, y: p.y }))
@@ -605,9 +539,6 @@ function filterByPeriod(pts, period) {
   return pts.filter(p => p.x >= since);
 }
 
-// ══════════════════════════════════════════════════════════
-//  Chart.js 共通オプション
-// ══════════════════════════════════════════════════════════
 function baseOptions(showLegend = false) {
   return {
     responsive: true,
@@ -656,26 +587,18 @@ function baseOptions(showLegend = false) {
   };
 }
 
-// ══════════════════════════════════════════════════════════
-//  トップチャート（積み上げ棒グラフ＋合計折れ線）
-// ══════════════════════════════════════════════════════════
 function buildTopChart() {
   const canvas = document.getElementById('topChart');
   const ctx    = canvas.getContext('2d');
 
-  // 月次ラベルを合計データから生成（統一した時系列軸）
   const gPtsAll = filterByPeriod(seriesUSD['GLOBAL'], topPeriod);
-  // YYYY-MM キーで統一
   const monthKeys = gPtsAll.map(p => {
     const d = p.x;
     return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
   });
 
-  // 各銘柄を月キーで引き当て（forward fill済みのfilledMapを使用）
-  // filledMapはprocessData内で生成済み → window経由で参照不可なので再計算
   function getMonthVal(ticker, monthKey) {
     const pts = seriesUSD[ticker] || [];
-    // 直近でmonthKey以前の最新値を返す
     let val = null;
     for (const pt of pts) {
       const mk = pt.x.getFullYear() + '-' + String(pt.x.getMonth()+1).padStart(2,'0');
@@ -687,12 +610,11 @@ function buildTopChart() {
 
   const datasets = [];
 
-  // 積み上げ棒グラフ（9カ国）
   STACK_TICKERS.forEach(t => {
     const info  = TICKERS_INFO.find(i => i.ticker === t);
     const color = STACK_COLORS[t];
     const data  = monthKeys.map(mk => ({
-      x: new Date(mk + '-15'),  // 月中日を使うと棒が正しく配置される
+      x: new Date(mk + '-15'),
       y: getMonthVal(t, mk) ?? 0,
     }));
     datasets.push({
@@ -709,7 +631,6 @@ function buildTopChart() {
     });
   });
 
-  // 合計折れ線
   datasets.push({
     type: 'line',
     label: '合計',
@@ -740,23 +661,18 @@ function buildTopChart() {
 
 function updateTopChart() {
   if (!topChartInst) return;
-  buildTopChart();  // 期間変更時は再描画
+  buildTopChart();
 }
 
-// ══════════════════════════════════════════════════════════
-//  表（USD換算値を表示）
-// ══════════════════════════════════════════════════════════
 function buildTable() {
   const tbody = document.getElementById('tableBody');
   tbody.innerHTML = '';
 
-  // 1年前の値を取得するヘルパー
   function getOneYearAgo(pts) {
     if (!pts || pts.length === 0) return null;
     const last = pts[pts.length - 1];
     const targetDate = new Date(last.x);
     targetDate.setFullYear(targetDate.getFullYear() - 1);
-    // 12ヶ月前に最も近いデータを探す
     let closest = null;
     let minDiff = Infinity;
     pts.forEach(pt => {
@@ -766,7 +682,6 @@ function buildTable() {
     return closest?.y ?? null;
   }
 
-  // 合計行
   const gPts  = seriesUSD['GLOBAL'];
   const gLast = gPts[gPts.length-1];
   const gPrevYear = getOneYearAgo(gPts);
@@ -827,10 +742,8 @@ function toggleVisibility(ticker) {
   const card = document.getElementById('card-' + ticker);
   if (card) card.style.opacity = visibility[ticker] ? '1' : '0.4';
 
-  // トップチャートの該当データセットを表示/非表示
   if (topChartInst) {
     if (ticker === 'GLOBAL') {
-      // 合計は最後のデータセット（折れ線）
       const ds = topChartInst.data.datasets[STACK_TICKERS.length];
       if (ds) ds.hidden = !visibility[ticker];
     }
@@ -838,9 +751,6 @@ function toggleVisibility(ticker) {
   }
 }
 
-// ══════════════════════════════════════════════════════════
-//  個別カードチャート（各国通貨建てのまま）
-// ══════════════════════════════════════════════════════════
 function buildCardsGrid() {
   const grid = document.getElementById('chartsGrid');
   grid.innerHTML = '';
@@ -858,15 +768,12 @@ function buildCardsGrid() {
 }
 
 function makeCard(ticker, label, tickerBadge, color) {
-  // カードはUSD換算値を使用
   const pts  = seriesUSD[ticker] || [];
   const last = pts[pts.length-1];
   const prev = pts[pts.length-2];
   const chg  = (last && prev) ? ((last.y - prev.y)/prev.y*100) : null;
   const chgStr = chg != null ? (chg>=0?'+':'') + chg.toFixed(1)+'%' : '';
   const chgCls = chg != null ? (chg>=0?'change-pos':'change-neg') : '';
-  const info = TICKERS_INFO.find(t => t.ticker === ticker);
-  const currLabel = info ? info.currency : '';
 
   cardPeriod[ticker] = '10y';
 
@@ -946,9 +853,6 @@ function renderCard(ticker) {
   });
 }
 
-// ══════════════════════════════════════════════════════════
-//  トップ期間ボタン
-// ══════════════════════════════════════════════════════════
 document.getElementById('topPeriodBtns').addEventListener('click', e => {
   const btn = e.target.closest('.period-btn');
   if (!btn) return;
@@ -958,9 +862,6 @@ document.getElementById('topPeriodBtns').addEventListener('click', e => {
   updateTopChart();
 });
 
-// ══════════════════════════════════════════════════════════
-//  初期化
-// ══════════════════════════════════════════════════════════
 async function init() {
   try {
     const resp = await fetch(DATA_URL);
@@ -985,21 +886,18 @@ async function init() {
   buildCardsGrid();
 }
 
-// ══════════════════════════════════════════════════════════
-//  デモデータ生成
-// ══════════════════════════════════════════════════════════
 function generateDemoData() {
   const series = {};
-  // 各国通貨建てのベースライン（実態に近い値）
   const baselines = {
     CNM2: 3.2e12/0.1385,  USM2: 8.5e12,         EUM2: 6.0e12/1.105,
-    JPM2: 9.8e12/0.00667, GBM2: 2.8e12/1.27,    CAM2: 1.2e12/0.738,
-    KRM2: 1.5e12/0.000735,RUM2: 0.9e12/0.01095, BRM2: 0.8e12/0.172,
+    JPM2: 9.8e12/0.00667, GBM2: 2.8e12/1.27,    KRM2: 1.5e12/0.000735,
+    AUM3: 1.8e12/0.645,   CAM2: 1.2e12/0.738,   RUM2: 0.9e12/0.01095,
+    BRM2: 0.8e12/0.172,
   };
   const growth = {
     CNM2:0.12, USM2:0.055, EUM2:0.05, JPM2:0.03,
-    GBM2:0.05, CAM2:0.055, AUM3:0.05, KRM2:0.07, RUM2:0.12,
-    BRM2:0.13,
+    GBM2:0.05, KRM2:0.07,  AUM3:0.05, CAM2:0.055,
+    RUM2:0.12, BRM2:0.13,
   };
 
   TICKERS_INFO.forEach(info => {
