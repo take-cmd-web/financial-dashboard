@@ -658,36 +658,61 @@ function baseOptions(showLegend = false) {
 function buildTopChart() {
   const canvas = document.getElementById('topChart');
   const ctx    = canvas.getContext('2d');
+
+  // 月次ラベルを合計データから生成（統一した時系列軸）
+  const gPtsAll = filterByPeriod(seriesUSD['GLOBAL'], topPeriod);
+  // YYYY-MM キーで統一
+  const monthKeys = gPtsAll.map(p => {
+    const d = p.x;
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+  });
+
+  // 各銘柄を月キーで引き当て（forward fill済みのfilledMapを使用）
+  // filledMapはprocessData内で生成済み → window経由で参照不可なので再計算
+  function getMonthVal(ticker, monthKey) {
+    const pts = seriesUSD[ticker] || [];
+    // 直近でmonthKey以前の最新値を返す
+    let val = null;
+    for (const pt of pts) {
+      const mk = pt.x.getFullYear() + '-' + String(pt.x.getMonth()+1).padStart(2,'0');
+      if (mk <= monthKey) val = pt.y;
+      else break;
+    }
+    return val;
+  }
+
   const datasets = [];
 
-  // 積み上げ（米国・EU・日本・英国）
+  // 積み上げ棒グラフ（9カ国）
   STACK_TICKERS.forEach(t => {
     const info  = TICKERS_INFO.find(i => i.ticker === t);
     const color = STACK_COLORS[t];
-    const pts   = filterByPeriod(seriesUSD[t] || [], topPeriod);
+    const data  = monthKeys.map(mk => ({
+      x: new Date(mk + '-15'),  // 月中日を使うと棒が正しく配置される
+      y: getMonthVal(t, mk) ?? 0,
+    }));
     datasets.push({
       type: 'bar',
       label: info?.label || t,
-      data: pts,
+      data,
       backgroundColor: color + 'cc',
       borderColor: color,
       borderWidth: 0,
       stack: 'stack1',
       order: 2,
-      barPercentage: 1.0,
+      barPercentage: 0.9,
       categoryPercentage: 1.0,
     });
   });
 
   // 合計折れ線
-  const gPts = filterByPeriod(seriesUSD['GLOBAL'], topPeriod);
   datasets.push({
     type: 'line',
     label: '合計',
-    data: gPts,
+    data: gPtsAll,
     borderColor: GLOBAL_COLOR,
     backgroundColor: 'transparent',
-    borderWidth: 2,
+    borderWidth: 2.5,
     pointRadius: 0,
     pointHoverRadius: 4,
     tension: 0.3,
@@ -698,6 +723,7 @@ function buildTopChart() {
   opts.scales.x.stacked = true;
   opts.scales.y.stacked = true;
   opts.scales.x.time.unit = 'year';
+  opts.scales.x.offset = true;
 
   if (topChartInst) topChartInst.destroy();
   topChartInst = new Chart(ctx, {
@@ -710,12 +736,7 @@ function buildTopChart() {
 
 function updateTopChart() {
   if (!topChartInst) return;
-  STACK_TICKERS.forEach((t, i) => {
-    topChartInst.data.datasets[i].data = filterByPeriod(seriesUSD[t] || [], topPeriod);
-  });
-  topChartInst.data.datasets[STACK_TICKERS.length].data =
-    filterByPeriod(seriesUSD['GLOBAL'], topPeriod);
-  topChartInst.update();
+  buildTopChart();  // 期間変更時は再描画
 }
 
 // ══════════════════════════════════════════════════════════
