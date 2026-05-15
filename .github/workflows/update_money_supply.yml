@@ -32,7 +32,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install tvdatafeed pandas
+          pip install pandas
+          pip install git+https://github.com/StreamAlpha/tvdatafeed.git
 
       - name: Fetch money supply data
         env:
