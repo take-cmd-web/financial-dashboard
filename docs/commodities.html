@@ -219,7 +219,9 @@
 
 <script>
 // ── 銘柄定義 ──────────────────────────────────────────
-const TICKERS = [
+// 個別チャート用（GSCI先頭）
+const INDIV_TICKERS = [
+  { name: "GSCI",          group: "指数" },
   { name: "原油 (WTI)",   group: "エネルギー" },
   { name: "天然ガス",     group: "エネルギー" },
   { name: "銅",           group: "工業金属" },
@@ -231,12 +233,19 @@ const TICKERS = [
   { name: "大豆",         group: "農産物" },
 ];
 
+// オーバービュー用（GSCI＋個別9銘柄）
+const OVERVIEW_TICKERS = INDIV_TICKERS;
+
+// チェックチップ（個別9銘柄のみ、GSCIは常時表示）
+const CHIP_TICKERS = INDIV_TICKERS.filter(t => t.name !== "GSCI");
+
 const PALETTE = [
+  "#141413",              // GSCI：ほぼ黒
   "#d97757","#c4603e","#e8a882",
   "#6a9bcc","#4a7fae","#92b8de",
   "#788c5d","#5a7243","#9db87c",
 ];
-const COLOR_MAP = Object.fromEntries(TICKERS.map((t, i) => [t.name, PALETTE[i]]));
+const COLOR_MAP = Object.fromEntries(INDIV_TICKERS.map((t, i) => [t.name, PALETTE[i]]));
 
 const RANGE_OPTIONS = [
   { label: "6M", months: 6 },
@@ -252,7 +261,7 @@ let overviewChart = null;
 let indivCharts   = {};
 let overviewMonths = 6;   // 初期：6M
 let indivMonths    = {};  // name → months
-let visibility     = Object.fromEntries(TICKERS.map(t => [t.name, true]));
+let visibility     = Object.fromEntries(INDIV_TICKERS.map(t => [t.name, true]));
 
 // ── ユーティリティ ────────────────────────────────────
 
@@ -333,7 +342,7 @@ function buildOverview() {
     b.classList.toggle("active", +b.dataset.months === overviewMonths);
   });
 
-  const datasets = TICKERS.map(({ name }) => {
+  const datasets = OVERVIEW_TICKERS.map(({ name }) => {
     const filtered = filterByRange(allData[name] || [], overviewMonths);
     return {
       label: name,
@@ -369,7 +378,7 @@ function buildIndividual() {
   grid.innerHTML = "";
   indivCharts = {};
 
-  TICKERS.forEach(({ name }) => {
+  INDIV_TICKERS.forEach(({ name }) => {
     const color  = COLOR_MAP[name];
     const series = allData[name] || [];
     const last   = series.at(-1);
@@ -429,7 +438,7 @@ function buildIndividual() {
 function buildToggles() {
   const container = document.getElementById("ticker-toggles");
   container.innerHTML = "";
-  TICKERS.forEach(({ name }) => {
+  INDIV_TICKERS.forEach(({ name }) => {
     const color = COLOR_MAP[name];
     const chip  = document.createElement("label");
     chip.className = "toggle-chip active";
