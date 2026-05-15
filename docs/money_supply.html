@@ -22,9 +22,7 @@
   --muted:   #b0aea5;
   --radius:  8px;
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   background: var(--bg);
   color: var(--text);
@@ -33,18 +31,8 @@ body {
   line-height: 1.6;
   min-height: 100vh;
 }
-
-.header {
-  padding: 32px 24px 0;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-.header-top {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
-}
+.header { padding: 32px 24px 0; max-width: 1400px; margin: 0 auto; }
+.header-top { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
 .page-title {
   font-family: 'Poppins', sans-serif;
   font-size: clamp(20px, 3vw, 28px);
@@ -52,25 +40,9 @@ body {
   color: var(--text);
   letter-spacing: -0.5px;
 }
-.page-subtitle {
-  font-family: 'Lora', serif;
-  font-style: italic;
-  color: var(--muted);
-  font-size: 13px;
-}
-.last-updated {
-  font-family: 'Lora', serif;
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 4px;
-}
-
-.main {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 20px 24px 48px;
-}
-
+.page-subtitle { font-family: 'Lora', serif; font-style: italic; color: var(--muted); font-size: 13px; }
+.last-updated { font-family: 'Lora', serif; font-size: 12px; color: var(--muted); margin-top: 4px; }
+.main { max-width: 1400px; margin: 0 auto; padding: 20px 24px 48px; }
 .section {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -87,12 +59,7 @@ body {
   letter-spacing: 0.8px;
   margin-bottom: 14px;
 }
-
-.period-btns {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-}
+.period-btns { display: flex; gap: 4px; flex-wrap: wrap; }
 .period-btn {
   font-family: 'Poppins', sans-serif;
   font-size: 11px;
@@ -106,12 +73,7 @@ body {
   transition: all 0.15s;
 }
 .period-btn:hover { border-color: var(--accent); color: var(--accent); }
-.period-btn.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
-}
-
+.period-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
 .top-chart-controls {
   display: flex;
   align-items: center;
@@ -120,16 +82,8 @@ body {
   gap: 10px;
   margin-bottom: 14px;
 }
-.chart-canvas-wrap {
-  position: relative;
-  width: 100%;
-  height: 360px;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+.chart-canvas-wrap { position: relative; width: 100%; height: 360px; }
+.data-table { width: 100%; border-collapse: collapse; }
 .data-table th {
   font-family: 'Poppins', sans-serif;
   font-size: 11px;
@@ -152,77 +106,35 @@ body {
 .data-table tr:last-child td { border-bottom: none; }
 .data-table tr:hover td { background: rgba(0,0,0,0.02); }
 .data-table tr.row-hidden td { opacity: 0.4; }
-
-.country-cell {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-.ticker-badge {
-  font-family: 'Poppins', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  color: var(--muted);
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 1px 5px;
-  letter-spacing: 0.4px;
-}
+.country-cell { display: flex; align-items: center; gap: 10px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 .val-cell {
   font-family: 'Poppins', sans-serif;
   font-size: 13px;
   font-weight: 500;
   text-align: right;
 }
-.val-cell .unit {
-  font-size: 10px;
-  color: var(--muted);
-  margin-left: 2px;
-}
-.change-cell {
-  font-family: 'Poppins', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  text-align: right;
-}
+.val-cell .unit { font-size: 10px; color: var(--muted); margin-left: 2px; }
+.change-cell { font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 500; text-align: right; }
 .change-pos { color: var(--accent3); }
 .change-neg { color: #e05252; }
-
 .cb-cell { text-align: center; }
 .cb-wrap {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 18px;
-  height: 18px;
+  width: 18px; height: 18px;
   border: 1.5px solid var(--border);
   border-radius: 3px;
   cursor: pointer;
   transition: all 0.15s;
   background: var(--bg);
 }
-.cb-wrap.checked {
-  background: var(--accent);
-  border-color: var(--accent);
-}
+.cb-wrap.checked { background: var(--accent); border-color: var(--accent); }
 .cb-wrap svg { display: none; }
 .cb-wrap.checked svg { display: block; }
-
-.charts-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-@media (max-width: 768px) {
-  .charts-grid { grid-template-columns: 1fr; }
-}
+.charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+@media (max-width: 768px) { .charts-grid { grid-template-columns: 1fr; } }
 .chart-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -237,41 +149,12 @@ body {
   flex-wrap: wrap;
   gap: 8px;
 }
-.chart-card-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.chart-card-title { display: flex; align-items: center; gap: 8px; }
 .chart-card-title .dot { width: 9px; height: 9px; }
-.chart-card-name {
-  font-family: 'Poppins', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-}
-.chart-card-ticker {
-  font-family: 'Poppins', sans-serif;
-  font-size: 10px;
-  color: var(--muted);
-}
-.chart-card-val {
-  font-family: 'Poppins', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  text-align: right;
-}
-.chart-card-val .sub {
-  font-size: 11px;
-  color: var(--muted);
-  font-weight: 400;
-}
-.card-canvas-wrap {
-  position: relative;
-  width: 100%;
-  height: 180px;
-}
-
+.chart-card-name { font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); }
+.chart-card-ticker { font-family: 'Poppins', sans-serif; font-size: 10px; color: var(--muted); }
+.chart-card-val { font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; text-align: right; }
+.card-canvas-wrap { position: relative; width: 100%; height: 180px; }
 .footer {
   text-align: center;
   padding: 20px 24px;
@@ -282,7 +165,6 @@ body {
   max-width: 1400px;
   margin: 0 auto;
 }
-
 .loading {
   display: flex;
   align-items: center;
@@ -301,15 +183,6 @@ body {
   animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-.error-msg {
-  text-align: center;
-  padding: 40px;
-  color: var(--muted);
-  font-family: 'Lora', serif;
-  font-style: italic;
-}
-
 @media (max-width: 600px) {
   .main { padding: 16px 12px 40px; }
   .header { padding: 20px 12px 0; }
@@ -330,6 +203,7 @@ body {
 
 <div class="main">
 
+  <!-- ① 積み上げチャート -->
   <div class="section" id="topSection">
     <div class="top-chart-controls">
       <div class="section-title" style="margin-bottom:0">主要9カ国 積み上げ＋合計（USD換算）</div>
@@ -346,10 +220,11 @@ body {
     </div>
   </div>
 
+  <!-- ② 表（ティッカーバッジなし） -->
   <div class="section" id="tableSection" style="display:none">
     <div class="section-title">直近の値（月次）</div>
     <div style="overflow-x:auto">
-      <table class="data-table" id="dataTable">
+      <table class="data-table">
         <thead>
           <tr>
             <th>国 / 地域</th>
@@ -364,6 +239,23 @@ body {
     </div>
   </div>
 
+  <!-- ③ 起点からの変化チャート -->
+  <div class="section" id="indexedSection" style="display:none">
+    <div class="top-chart-controls">
+      <div class="section-title" style="margin-bottom:0">表示期間起点からの変化（USD換算・積み上げ）</div>
+      <div class="period-btns" id="indexedPeriodBtns">
+        <button class="period-btn" data-p="1y">1年</button>
+        <button class="period-btn" data-p="5y">5年</button>
+        <button class="period-btn active" data-p="10y">10年</button>
+        <button class="period-btn" data-p="all">すべて</button>
+      </div>
+    </div>
+    <div class="chart-canvas-wrap">
+      <canvas id="indexedChart"></canvas>
+    </div>
+  </div>
+
+  <!-- ④ 個別カード（前年比） -->
   <div id="chartsGrid" class="charts-grid" style="display:none"></div>
 
 </div>
@@ -376,26 +268,10 @@ body {
 const DATA_URL = 'data_money_supply.json';
 
 const FX_FALLBACK = {
-  USD: 1,
-  CNY: 0.1385,
-  EUR: 1.105,
-  JPY: 0.00667,
-  GBP: 1.27,
-  KRW: 0.000735,
-  AUD: 0.645,
-  CAD: 0.738,
-  RUB: 0.01095,
-  BRL: 0.172,
-  MXN: 0.0495,
-  INR: 0.01195,
-  SAR: 0.2666,
-  IDR: 0.0000623,
-  TRY: 0.02857,
-  ZAR: 0.0535,
-  ARS: 0.00098,
+  USD:1, CNY:0.1385, EUR:1.105, JPY:0.00667, GBP:1.27,
+  KRW:0.000735, AUD:0.645, CAD:0.738, RUB:0.01095, BRL:0.172,
 };
 
-// 順番変更：英国、韓国、豪州、カナダ、ロシア、ブラジル
 const TICKERS_INFO = [
   { ticker:'CNM2', label:'中国',     currency:'CNY' },
   { ticker:'USM2', label:'米国',     currency:'USD' },
@@ -413,41 +289,37 @@ const STACK_TICKERS = ['CNM2','USM2','EUM2','JPM2','GBM2','KRM2','AUM3','CAM2','
 
 const COLORS = [
   '#d97757', // 合計
-  '#e05252', // CNM2 中国
-  '#6a9bcc', // USM2 米国
-  '#f5a623', // EUM2 EU
-  '#788c5d', // JPM2 日本
-  '#1abc9c', // GBM2 英国
-  '#3498db', // KRM2 韓国
-  '#e67e22', // AUM3 豪州
-  '#9b59b6', // CAM2 カナダ
-  '#c0392b', // RUM2 ロシア
-  '#27ae60', // BRM2 ブラジル
+  '#e05252', // 中国
+  '#6a9bcc', // 米国
+  '#f5a623', // EU
+  '#788c5d', // 日本
+  '#1abc9c', // 英国
+  '#3498db', // 韓国
+  '#e67e22', // 豪州
+  '#9b59b6', // カナダ
+  '#c0392b', // ロシア
+  '#27ae60', // ブラジル
 ];
 const GLOBAL_COLOR = '#d97757';
 
 const STACK_COLORS = {
-  CNM2: '#e05252',
-  USM2: '#6a9bcc',
-  EUM2: '#f5a623',
-  JPM2: '#788c5d',
-  GBM2: '#1abc9c',
-  KRM2: '#3498db',
-  AUM3: '#e67e22',
-  CAM2: '#9b59b6',
-  RUM2: '#c0392b',
-  BRM2: '#27ae60',
+  CNM2:'#e05252', USM2:'#6a9bcc', EUM2:'#f5a623', JPM2:'#788c5d',
+  GBM2:'#1abc9c', KRM2:'#3498db', AUM3:'#e67e22', CAM2:'#9b59b6',
+  RUM2:'#c0392b', BRM2:'#27ae60',
 };
 
-var rawData    = null;
-var seriesData = {};
-var seriesUSD  = {};
-var fxRates    = {};
-var visibility = {};
-var topPeriod  = '10y';
-var cardPeriod = {};
-var topChartInst = null;
-var cardCharts   = {};
+var rawData       = null;
+var seriesData    = {};  // 現地通貨建て
+var seriesUSD     = {};  // USD換算
+var filledMap     = {};  // forward fill済み月別USD値
+var fxRates       = {};
+var visibility    = {};
+var topPeriod     = '10y';
+var indexedPeriod = '10y';
+var cardPeriod    = {};
+var topChartInst     = null;
+var indexedChartInst = null;
+var cardCharts       = {};
 
 function periodToDate(p) {
   const now = new Date();
@@ -456,14 +328,21 @@ function periodToDate(p) {
   if (p === '10y') return new Date(now.getFullYear()-10, now.getMonth(), 1);
   return new Date('2000-01-01');
 }
-
 function formatT(v) {
   if (v == null || isNaN(v)) return '—';
   if (Math.abs(v) >= 1e12) return (v/1e12).toFixed(2) + 'T';
   if (Math.abs(v) >= 1e9)  return (v/1e9).toFixed(1)  + 'B';
   return v.toFixed(0);
 }
+function filterByPeriod(pts, period) {
+  const since = periodToDate(period);
+  return pts.filter(p => p.x >= since);
+}
+function toMK(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+}
 
+// ── データ処理 ──
 function processData(json) {
   const storedFX = json.meta?.fx_rates || {};
   TICKERS_INFO.forEach(info => {
@@ -471,456 +350,403 @@ function processData(json) {
   });
 
   const series = json.series || {};
-
   TICKERS_INFO.forEach(info => {
     const raw = series[info.ticker] || [];
     const fx  = fxRates[info.currency] || 1;
-    seriesData[info.ticker] = raw.map(([d,v]) => ({
-      x: new Date(d), y: v
-    })).sort((a,b) => a.x - b.x);
-
-    seriesUSD[info.ticker] = seriesData[info.ticker].map(pt => ({
-      x: pt.x, y: pt.y * fx
-    }));
-
+    seriesData[info.ticker] = raw.map(([d,v]) => ({ x:new Date(d), y:v })).sort((a,b) => a.x-b.x);
+    seriesUSD[info.ticker]  = seriesData[info.ticker].map(pt => ({ x:pt.x, y:pt.y*fx }));
     visibility[info.ticker] = true;
   });
 
-  function toMonthKey(dateOrStr) {
-    if (typeof dateOrStr === 'string') return dateOrStr.slice(0,7);
-    const d = dateOrStr;
-    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
-  }
-
-  const tickerMonthMap = {};
+  // 月別マップ & forward fill
+  const monthMap = {};
   TICKERS_INFO.forEach(info => {
-    tickerMonthMap[info.ticker] = {};
-    seriesUSD[info.ticker].forEach(pt => {
-      tickerMonthMap[info.ticker][toMonthKey(pt.x)] = pt.y;
-    });
+    monthMap[info.ticker] = {};
+    seriesUSD[info.ticker].forEach(pt => { monthMap[info.ticker][toMK(pt.x)] = pt.y; });
   });
-
   const allMonths = new Set();
-  TICKERS_INFO.forEach(info => {
-    Object.keys(tickerMonthMap[info.ticker]).forEach(m => allMonths.add(m));
-  });
+  TICKERS_INFO.forEach(info => Object.keys(monthMap[info.ticker]).forEach(m => allMonths.add(m)));
   const sortedMonths = Array.from(allMonths).sort();
 
-  const filledMap = {};
   TICKERS_INFO.forEach(info => {
     filledMap[info.ticker] = {};
-    let lastVal = null;
-    sortedMonths.forEach(month => {
-      const v = tickerMonthMap[info.ticker][month];
-      if (v != null) lastVal = v;
-      if (lastVal !== null) filledMap[info.ticker][month] = lastVal;
+    let last = null;
+    sortedMonths.forEach(m => {
+      const v = monthMap[info.ticker][m];
+      if (v != null) last = v;
+      if (last !== null) filledMap[info.ticker][m] = last;
     });
   });
 
-  seriesUSD['GLOBAL'] = sortedMonths
-    .map(month => {
-      let sum = 0;
-      let cnt = 0;
-      TICKERS_INFO.forEach(info => {
-        const v = filledMap[info.ticker][month];
-        if (v != null) { sum += v; cnt++; }
-      });
-      return { x: new Date(month + '-02'), y: sum, cnt };
-    })
-    .filter(p => p.cnt >= 8)
-    .map(p => ({ x: p.x, y: p.y }))
-    .sort((a,b) => a.x - b.x);
+  // GLOBAL合計
+  seriesUSD['GLOBAL'] = sortedMonths.map(m => {
+    let sum=0, cnt=0;
+    TICKERS_INFO.forEach(info => { const v=filledMap[info.ticker][m]; if(v!=null){sum+=v;cnt++;} });
+    return { x:new Date(m+'-02'), y:sum, cnt };
+  }).filter(p=>p.cnt>=8).map(p=>({x:p.x,y:p.y})).sort((a,b)=>a.x-b.x);
   seriesData['GLOBAL'] = seriesUSD['GLOBAL'];
   visibility['GLOBAL'] = true;
 }
 
-function filterByPeriod(pts, period) {
-  const since = periodToDate(period);
-  return pts.filter(p => p.x >= since);
-}
-
-function baseOptions(showLegend = false) {
+// ── Chart.js 共通オプション ──
+function baseOptions(showLegend=false) {
   return {
     responsive: true,
     maintainAspectRatio: false,
-    animation: { duration: 400 },
-    interaction: { mode: 'index', intersect: false },
+    animation: { duration:400 },
+    interaction: { mode:'index', intersect:false },
     plugins: {
       legend: {
         display: showLegend,
         position: 'top',
-        labels: {
-          font: { family: 'Poppins', size: 11 },
-          color: '#141413',
-          boxWidth: 10, boxHeight: 10, padding: 12,
-          usePointStyle: true, pointStyle: 'circle',
-        },
+        labels: { font:{family:'Poppins',size:11}, color:'#141413', boxWidth:10, boxHeight:10, padding:12, usePointStyle:true, pointStyle:'circle' },
       },
       tooltip: {
-        backgroundColor: '#faf9f5',
-        borderColor: '#e8e6dc',
-        borderWidth: 1,
-        titleColor: '#141413',
-        bodyColor: '#141413',
-        titleFont: { family: 'Poppins', size: 12, weight: '600' },
-        bodyFont: { family: 'Lora', size: 12 },
-        padding: 10,
-        callbacks: {
-          label: ctx => ` ${ctx.dataset.label}: ${formatT(ctx.parsed.y)} USD`,
-        }
+        backgroundColor:'#faf9f5', borderColor:'#e8e6dc', borderWidth:1,
+        titleColor:'#141413', bodyColor:'#141413',
+        titleFont:{family:'Poppins',size:12,weight:'600'},
+        bodyFont:{family:'Lora',size:12}, padding:10,
       },
     },
     scales: {
       x: {
-        type: 'time',
-        time: { unit: 'year', tooltipFormat: 'yyyy年MM月' },
-        grid: { color: '#e8e6dc', lineWidth: 0.5 },
-        ticks: { font: { family: 'Poppins', size: 11 }, color: '#b0aea5', maxTicksLimit: 10 },
-        border: { color: '#e8e6dc' },
+        type:'time', time:{unit:'year',tooltipFormat:'yyyy年M月'},
+        grid:{color:'#e8e6dc',lineWidth:0.5},
+        ticks:{font:{family:'Poppins',size:11},color:'#b0aea5',maxTicksLimit:10},
+        border:{color:'#e8e6dc'},
       },
       y: {
-        grid: { color: '#e8e6dc', lineWidth: 0.5 },
-        ticks: { font: { family: 'Poppins', size: 11 }, color: '#b0aea5', callback: v => formatT(v) },
-        border: { color: '#e8e6dc' },
+        grid:{color:'#e8e6dc',lineWidth:0.5},
+        ticks:{font:{family:'Poppins',size:11},color:'#b0aea5',callback:v=>formatT(v)},
+        border:{color:'#e8e6dc'},
       },
     },
   };
 }
 
+// ── ① トップチャート ──
 function buildTopChart() {
   const canvas = document.getElementById('topChart');
-  const ctx    = canvas.getContext('2d');
-
   const gPtsAll = filterByPeriod(seriesUSD['GLOBAL'], topPeriod);
-  const monthKeys = gPtsAll.map(p => {
-    const d = p.x;
-    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
-  });
+  const monthKeys = gPtsAll.map(p => toMK(p.x));
 
-  function getMonthVal(ticker, monthKey) {
-    const pts = seriesUSD[ticker] || [];
-    let val = null;
-    for (const pt of pts) {
-      const mk = pt.x.getFullYear() + '-' + String(pt.x.getMonth()+1).padStart(2,'0');
-      if (mk <= monthKey) val = pt.y;
-      else break;
-    }
+  function getVal(ticker, mk) {
+    const pts = seriesUSD[ticker]||[];
+    let val=null;
+    for(const pt of pts){ if(toMK(pt.x)<=mk) val=pt.y; else break; }
     return val;
   }
 
   const datasets = [];
-
   STACK_TICKERS.forEach(t => {
-    const info  = TICKERS_INFO.find(i => i.ticker === t);
-    const color = STACK_COLORS[t];
-    const data  = monthKeys.map(mk => ({
-      x: new Date(mk + '-15'),
-      y: getMonthVal(t, mk) ?? 0,
-    }));
+    const info=TICKERS_INFO.find(i=>i.ticker===t);
+    const color=STACK_COLORS[t];
     datasets.push({
-      type: 'bar',
-      label: info?.label || t,
-      data,
-      backgroundColor: color + 'cc',
-      borderColor: color,
-      borderWidth: 0,
-      stack: 'stack1',
-      order: 2,
-      barPercentage: 0.9,
-      categoryPercentage: 1.0,
+      type:'bar', label:info?.label||t,
+      data:monthKeys.map(mk=>({x:new Date(mk+'-15'),y:getVal(t,mk)??0})),
+      backgroundColor:color+'cc', borderColor:color, borderWidth:0,
+      stack:'stack1', order:2, barPercentage:0.9, categoryPercentage:1.0,
     });
   });
-
   datasets.push({
-    type: 'line',
-    label: '合計',
-    data: gPtsAll,
-    borderColor: GLOBAL_COLOR,
-    backgroundColor: 'transparent',
-    borderWidth: 2.5,
-    pointRadius: 0,
-    pointHoverRadius: 4,
-    tension: 0.3,
-    order: 1,
+    type:'line', label:'合計', data:gPtsAll,
+    borderColor:GLOBAL_COLOR, backgroundColor:'transparent',
+    borderWidth:2.5, pointRadius:0, pointHoverRadius:4, tension:0.3, order:1,
   });
 
   const opts = baseOptions(true);
-  opts.scales.x.stacked = true;
-  opts.scales.y.stacked = true;
-  opts.scales.x.time.unit = 'year';
-  opts.scales.x.offset = true;
+  opts.scales.x.stacked=true; opts.scales.y.stacked=true; opts.scales.x.offset=true;
+  opts.scales.x.time.unit = topPeriod==='1y' ? 'month' : 'year';
+  opts.scales.x.time.displayFormats = { month:'yyyy/M', year:'yyyy' };
+  opts.plugins.tooltip.callbacks = { label:ctx=>` ${ctx.dataset.label}: ${formatT(ctx.parsed.y)} USD` };
 
-  if (topChartInst) topChartInst.destroy();
-  topChartInst = new Chart(ctx, {
-    type: 'bar',
-    data: { datasets },
-    options: opts,
-  });
-  canvas.style.display = 'block';
+  if(topChartInst) topChartInst.destroy();
+  topChartInst = new Chart(canvas.getContext('2d'), {type:'bar',data:{datasets},options:opts});
+  canvas.style.display='block';
 }
 
-function updateTopChart() {
-  if (!topChartInst) return;
-  buildTopChart();
-}
-
+// ── ② 表 ──
 function buildTable() {
   const tbody = document.getElementById('tableBody');
   tbody.innerHTML = '';
 
-  function getOneYearAgo(pts) {
-    if (!pts || pts.length === 0) return null;
-    const last = pts[pts.length - 1];
-    const targetDate = new Date(last.x);
-    targetDate.setFullYear(targetDate.getFullYear() - 1);
-    let closest = null;
-    let minDiff = Infinity;
-    pts.forEach(pt => {
-      const diff = Math.abs(pt.x - targetDate);
-      if (diff < minDiff) { minDiff = diff; closest = pt; }
-    });
-    return closest?.y ?? null;
+  function getYearAgo(pts) {
+    if(!pts||pts.length===0) return null;
+    const last=pts[pts.length-1];
+    const target=new Date(last.x); target.setFullYear(target.getFullYear()-1);
+    let closest=null, minDiff=Infinity;
+    pts.forEach(pt=>{ const d=Math.abs(pt.x-target); if(d<minDiff){minDiff=d;closest=pt;} });
+    return closest?.y??null;
   }
 
-  const gPts  = seriesUSD['GLOBAL'];
-  const gLast = gPts[gPts.length-1];
-  const gPrevYear = getOneYearAgo(gPts);
-  tbody.appendChild(makeTableRow('GLOBAL', '合計', '', GLOBAL_COLOR, gLast?.y, gPrevYear));
-
-  TICKERS_INFO.forEach((info, i) => {
-    const pts  = seriesUSD[info.ticker];
-    const last = pts[pts.length-1];
-    const prevYear = getOneYearAgo(pts);
-    tbody.appendChild(makeTableRow(info.ticker, info.label, info.ticker, COLORS[i+1], last?.y, prevYear));
+  const gPts=seriesUSD['GLOBAL'];
+  tbody.appendChild(makeRow('GLOBAL','合計',GLOBAL_COLOR,gPts[gPts.length-1]?.y,getYearAgo(gPts)));
+  TICKERS_INFO.forEach((info,i)=>{
+    const pts=seriesUSD[info.ticker];
+    tbody.appendChild(makeRow(info.ticker,info.label,COLORS[i+1],pts[pts.length-1]?.y,getYearAgo(pts)));
   });
-
-  document.getElementById('tableSection').style.display = 'block';
+  document.getElementById('tableSection').style.display='block';
 }
 
-function makeTableRow(ticker, label, tickerBadge, color, latestVal, prevVal) {
-  const tr = document.createElement('tr');
-  tr.dataset.ticker = ticker;
-  if (ticker !== 'GLOBAL' && !visibility[ticker]) tr.classList.add('row-hidden');
+function makeRow(ticker, label, color, latestVal, prevVal) {
+  const tr=document.createElement('tr');
+  tr.dataset.ticker=ticker;
+  if(ticker!=='GLOBAL'&&!visibility[ticker]) tr.classList.add('row-hidden');
+  const chg=(latestVal!=null&&prevVal!=null)?latestVal-prevVal:null;
+  const chgPct=(chg!=null&&prevVal)?(chg/prevVal*100):null;
+  const chgClass=chg==null?'':chg>=0?'change-pos':'change-neg';
+  const chgStr=chgPct!=null?(chg>=0?'+':'')+chgPct.toFixed(1)+'%':'—';
+  const checked=ticker==='GLOBAL'?true:visibility[ticker];
 
-  const chg      = (latestVal != null && prevVal != null) ? latestVal - prevVal : null;
-  const chgPct   = (chg != null && prevVal) ? (chg/prevVal*100) : null;
-  const chgClass = chg == null ? '' : chg >= 0 ? 'change-pos' : 'change-neg';
-  const chgStr   = chgPct != null ? (chg >= 0 ? '+' : '') + chgPct.toFixed(1) + '%' : '—';
-  const isGlobal = ticker === 'GLOBAL';
-  const checked  = isGlobal ? true : visibility[ticker];
-
-  tr.innerHTML = `
-    <td>
-      <div class="country-cell">
-        <div class="dot" style="background:${color}"></div>
-        <span>${label}</span>
-        ${tickerBadge ? `<span class="ticker-badge">${tickerBadge}</span>` : ''}
-      </div>
-    </td>
+  tr.innerHTML=`
+    <td><div class="country-cell"><div class="dot" style="background:${color}"></div><span>${label}</span></div></td>
     <td class="val-cell">${formatT(latestVal)}<span class="unit"> USD</span></td>
-    <td class="val-cell">${formatT(prevVal) !== "—" ? formatT(prevVal) : "—"}<span class="unit"> USD</span></td>
+    <td class="val-cell">${formatT(prevVal)!=='—'?formatT(prevVal):'—'}<span class="unit"> USD</span></td>
     <td class="change-cell ${chgClass}">${chgStr}</td>
     <td class="cb-cell">
-      <div class="cb-wrap ${checked ? 'checked' : ''}" data-ticker="${ticker}">
-        <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-          <path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
+      <div class="cb-wrap ${checked?'checked':''}" data-ticker="${ticker}">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
       </div>
-    </td>
-  `;
-
-  tr.querySelector('.cb-wrap').addEventListener('click', () => toggleVisibility(ticker));
+    </td>`;
+  tr.querySelector('.cb-wrap').addEventListener('click',()=>toggleVisibility(ticker));
   return tr;
 }
 
 function toggleVisibility(ticker) {
-  visibility[ticker] = !visibility[ticker];
-  const tr = document.querySelector(`tr[data-ticker="${ticker}"]`);
-  if (tr) tr.classList.toggle('row-hidden', !visibility[ticker]);
-  const cb = document.querySelector(`.cb-wrap[data-ticker="${ticker}"]`);
-  if (cb) cb.classList.toggle('checked', visibility[ticker]);
-  const card = document.getElementById('card-' + ticker);
-  if (card) card.style.opacity = visibility[ticker] ? '1' : '0.4';
-
-  if (topChartInst) {
-    if (ticker === 'GLOBAL') {
-      const ds = topChartInst.data.datasets[STACK_TICKERS.length];
-      if (ds) ds.hidden = !visibility[ticker];
-    }
+  visibility[ticker]=!visibility[ticker];
+  document.querySelector(`tr[data-ticker="${ticker}"]`)?.classList.toggle('row-hidden',!visibility[ticker]);
+  document.querySelector(`.cb-wrap[data-ticker="${ticker}"]`)?.classList.toggle('checked',visibility[ticker]);
+  const card=document.getElementById('card-'+ticker);
+  if(card) card.style.opacity=visibility[ticker]?'1':'0.4';
+  if(topChartInst){
+    if(ticker==='GLOBAL'){const ds=topChartInst.data.datasets[STACK_TICKERS.length];if(ds)ds.hidden=!visibility[ticker];}
     topChartInst.update();
   }
 }
 
-function buildCardsGrid() {
-  const grid = document.getElementById('chartsGrid');
-  grid.innerHTML = '';
+// ── ③ 起点からの変化チャート ──
+function buildIndexedChart() {
+  const since=periodToDate(indexedPeriod);
+  const sinceKey=toMK(since);
 
-  grid.appendChild(makeCard('GLOBAL', '合計', '', GLOBAL_COLOR));
-  TICKERS_INFO.forEach((info, i) => {
-    grid.appendChild(makeCard(info.ticker, info.label, info.ticker, COLORS[i+1]));
+  const allMonths=new Set();
+  TICKERS_INFO.forEach(info=>Object.keys(filledMap[info.ticker]).forEach(m=>{if(m>=sinceKey)allMonths.add(m);}));
+  const months=Array.from(allMonths).sort();
+  if(months.length===0) return;
+
+  // 起点月：全銘柄がデータを持つ最初の月
+  const firstMonth=months[0];
+  // 起点値は firstMonth 以前の直近値（forward fill済みなので firstMonth で取れる）
+  // 起点値：sinceKey の直前月の値（= 起点時点での残高）を使い、変化量を 0 スタートにする
+  const baseVals={};
+  TICKERS_INFO.forEach(info=>{
+    const allKeys=Object.keys(filledMap[info.ticker]).sort();
+    let baseVal=null;
+    for(const k of allKeys){
+      if(k<=sinceKey) baseVal=filledMap[info.ticker][k];
+      else break;
+    }
+    // sinceKey がデータ開始より前の場合は最初の月の値を使う
+    if(baseVal===null) baseVal=filledMap[info.ticker][firstMonth]??null;
+    baseVals[info.ticker]=baseVal;
+  });
+  let globalBase=0;
+  TICKERS_INFO.forEach(info=>{ if(baseVals[info.ticker]) globalBase+=baseVals[info.ticker]; });
+
+  const datasets=[];
+  STACK_TICKERS.forEach(t=>{
+    const info=TICKERS_INFO.find(i=>i.ticker===t);
+    const color=STACK_COLORS[t];
+    const base=baseVals[t];
+    datasets.push({
+      type:'bar', label:info?.label||t,
+      data:months.map(mk=>({x:new Date(mk+'-15'),y:base!=null&&filledMap[t][mk]!=null?filledMap[t][mk]-base:0})),
+      backgroundColor:color+'cc', borderColor:color, borderWidth:0,
+      stack:'stack1', order:2, barPercentage:0.9, categoryPercentage:1.0,
+    });
   });
 
-  grid.style.display = 'grid';
-  requestAnimationFrame(() => {
+  const globalData=months.map(mk=>{
+    let sum=0,cnt=0;
+    TICKERS_INFO.forEach(info=>{const v=filledMap[info.ticker][mk];if(v!=null){sum+=v;cnt++;}});
+    return {x:new Date(mk+'-02'),y:cnt>=8?sum-globalBase:null};
+  }).filter(p=>p.y!=null);
+
+  datasets.push({
+    type:'line', label:'合計（変化）', data:globalData,
+    borderColor:GLOBAL_COLOR, backgroundColor:'transparent',
+    borderWidth:2.5, pointRadius:0, pointHoverRadius:4, tension:0.3, order:1,
+  });
+
+  const opts=baseOptions(true);
+  opts.scales.x.stacked=true; opts.scales.y.stacked=true; opts.scales.x.offset=true;
+  opts.scales.x.time.unit = indexedPeriod==='1y' ? 'month' : 'year';
+  opts.scales.x.time.displayFormats = { month:'yyyy/M', year:'yyyy' };
+  opts.plugins.tooltip.callbacks={label:ctx=>` ${ctx.dataset.label}: ${formatT(ctx.parsed.y)} USD`};
+
+  if(indexedChartInst) indexedChartInst.destroy();
+  indexedChartInst=new Chart(document.getElementById('indexedChart').getContext('2d'),{type:'bar',data:{datasets},options:opts});
+  document.getElementById('indexedSection').style.display='block';
+}
+
+// ── ④ 個別カード（現地通貨建て前年比）──
+function buildCardsGrid() {
+  const grid=document.getElementById('chartsGrid');
+  grid.innerHTML='';
+  grid.appendChild(makeCard('GLOBAL','合計',GLOBAL_COLOR));
+  TICKERS_INFO.forEach((info,i)=>{ grid.appendChild(makeCard(info.ticker,info.label,COLORS[i+1])); });
+  grid.style.display='grid';
+  requestAnimationFrame(()=>{
     renderCard('GLOBAL');
-    TICKERS_INFO.forEach(info => renderCard(info.ticker));
+    TICKERS_INFO.forEach(info=>renderCard(info.ticker));
   });
 }
 
-function makeCard(ticker, label, tickerBadge, color) {
-  const pts  = seriesUSD[ticker] || [];
-  const last = pts[pts.length-1];
-  const prev = pts[pts.length-2];
-  const chg  = (last && prev) ? ((last.y - prev.y)/prev.y*100) : null;
-  const chgStr = chg != null ? (chg>=0?'+':'') + chg.toFixed(1)+'%' : '';
-  const chgCls = chg != null ? (chg>=0?'change-pos':'change-neg') : '';
+function calcYoY(pts, refPt) {
+  if(!refPt||!pts||pts.length===0) return null;
+  // refPtのインデックスを探す
+  const idx=pts.indexOf(refPt);
+  if(idx<0) return null;
+  // 12ヶ月前のインデックス
+  const prevIdx=idx-12;
+  if(prevIdx<0) return null;
+  const prev=pts[prevIdx];
+  if(!prev||prev.y===0) return null;
+  // 日付が実際に約12ヶ月離れているか確認（±45日）
+  const diffMs=Math.abs(refPt.x-prev.x);
+  const expectedMs=365*24*3600*1000;
+  if(Math.abs(diffMs-expectedMs)>45*24*3600*1000) return null;
+  return (refPt.y-prev.y)/prev.y*100;
+}
 
-  cardPeriod[ticker] = '10y';
+function makeCard(ticker, label, color) {
+  const pts=seriesData[ticker]||[];
+  const last=pts[pts.length-1];
+  const info=TICKERS_INFO.find(t=>t.ticker===ticker);
+  const isGlobal=ticker==='GLOBAL';
+  const yoyVal=calcYoY(pts,last);
+  const yoyStr=yoyVal!=null?(yoyVal>=0?'+':'')+yoyVal.toFixed(1)+'%':'—';
+  const yoyCls=yoyVal!=null?(yoyVal>=0?'change-pos':'change-neg'):'';
+  const subLabel=isGlobal?'USD換算合計 · 前年比':`${ticker} · ${info?.currency||''} · 前年比`;
+  cardPeriod[ticker]='10y';
 
-  const div = document.createElement('div');
-  div.className = 'chart-card';
-  div.id = 'card-' + ticker;
-  div.innerHTML = `
+  const div=document.createElement('div');
+  div.className='chart-card'; div.id='card-'+ticker;
+  div.innerHTML=`
     <div class="chart-card-header">
       <div class="chart-card-title">
         <div class="dot" style="background:${color}"></div>
         <div>
           <div class="chart-card-name">${label}</div>
-          <div class="chart-card-ticker">${tickerBadge ? tickerBadge + ' · ' : ''}月次</div>
+          <div class="chart-card-ticker">${subLabel}</div>
         </div>
       </div>
-      <div class="chart-card-val">
-        ${formatT(last?.y)}<span class="unit" style="font-size:10px;color:var(--muted)"> USD</span>
-        ${chgStr ? `<br><span class="sub ${chgCls}" style="font-size:11px">${chgStr}</span>` : ''}
-      </div>
+      <div class="chart-card-val ${yoyCls}">${yoyStr}</div>
     </div>
     <div class="period-btns" style="margin-bottom:10px">
-      <button class="period-btn" data-p="1y"  data-ticker="${ticker}">1年</button>
-      <button class="period-btn" data-p="5y"  data-ticker="${ticker}">5年</button>
+      <button class="period-btn" data-p="1y" data-ticker="${ticker}">1年</button>
+      <button class="period-btn" data-p="5y" data-ticker="${ticker}">5年</button>
       <button class="period-btn active" data-p="10y" data-ticker="${ticker}">10年</button>
       <button class="period-btn" data-p="all" data-ticker="${ticker}">すべて</button>
     </div>
-    <div class="card-canvas-wrap">
-      <canvas id="canvas-${ticker}"></canvas>
-    </div>
-  `;
-
-  div.querySelectorAll('.period-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      div.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+    <div class="card-canvas-wrap"><canvas id="canvas-${ticker}"></canvas></div>`;
+  div.querySelectorAll('.period-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      div.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
-      cardPeriod[ticker] = btn.dataset.p;
+      cardPeriod[ticker]=btn.dataset.p;
       renderCard(ticker);
     });
   });
-
   return div;
 }
 
 function renderCard(ticker) {
-  const canvas = document.getElementById('canvas-' + ticker);
-  if (!canvas) return;
+  const canvas=document.getElementById('canvas-'+ticker);
+  if(!canvas) return;
+  const isGlobal=ticker==='GLOBAL';
+  const color=isGlobal?GLOBAL_COLOR:COLORS[TICKERS_INFO.findIndex(t=>t.ticker===ticker)+1];
+  const label=isGlobal?'合計':TICKERS_INFO.find(t=>t.ticker===ticker)?.label||ticker;
+  const period=cardPeriod[ticker]||'10y';
+  const pts=seriesData[ticker]||[];
+  const yoySeries=filterByPeriod(pts,period).map(pt=>{
+    const yoy=calcYoY(pts,pt);
+    return {x:pt.x,y:yoy};
+  }).filter(p=>p.y!=null);
 
-  const isGlobal = ticker === 'GLOBAL';
-  const color = isGlobal ? GLOBAL_COLOR : COLORS[TICKERS_INFO.findIndex(t => t.ticker === ticker) + 1];
-  const label = isGlobal ? '合計' : TICKERS_INFO.find(t => t.ticker === ticker)?.label || ticker;
-  const period = cardPeriod[ticker] || '10y';
-  const pts = filterByPeriod(seriesUSD[ticker] || [], period);
+  if(cardCharts[ticker]){cardCharts[ticker].destroy();delete cardCharts[ticker];}
 
-  if (cardCharts[ticker]) { cardCharts[ticker].destroy(); delete cardCharts[ticker]; }
+  const opts=baseOptions(false);
+  opts.plugins.tooltip.callbacks={label:ctx=>` ${label}: ${ctx.parsed.y!=null?(ctx.parsed.y>=0?'+':'')+ctx.parsed.y.toFixed(2)+'%':'—'}`};
+  opts.scales.y.ticks.callback=v=>(v>=0?'+':'')+v.toFixed(1)+'%';
+  opts.scales.x.ticks.maxTicksLimit=6;
+  opts.scales.y.ticks.maxTicksLimit=8;
+  opts.scales.y.grid.color=ctx=>ctx.tick?.value===0?'#b0aea5':'#e8e6dc';
+  opts.scales.y.grid.lineWidth=ctx=>ctx.tick?.value===0?1.5:0.5;
+  const hasNeg=yoySeries.some(p=>p.y<0);
+  const yMin=hasNeg?Math.min(...yoySeries.map(p=>p.y))*1.1:0;
+  const yMax=Math.max(...yoySeries.map(p=>p.y))*1.1;
+  opts.scales.y.min=yMin;
+  opts.scales.y.max=yMax;
 
-  const opts = baseOptions(false);
-  opts.plugins.tooltip.callbacks.label = ctx => ` ${label}: ${formatT(ctx.parsed.y)} USD`;
-  opts.scales.x.ticks.maxTicksLimit = 6;
-  opts.scales.y.ticks.maxTicksLimit = 5;
-
-  cardCharts[ticker] = new Chart(canvas.getContext('2d'), {
-    type: 'line',
-    data: {
-      datasets: [{
-        label,
-        data: pts,
-        borderColor: color,
-        backgroundColor: color + '20',
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHoverRadius: 3,
-        fill: true,
-        tension: 0.4,
-      }]
-    },
-    options: opts,
+  cardCharts[ticker]=new Chart(canvas.getContext('2d'),{
+    type:'line',
+    data:{datasets:[{
+      label, data:yoySeries,
+      borderColor:color, backgroundColor:color+'20',
+      borderWidth:2, pointRadius:0, pointHoverRadius:3, fill:true, tension:0.4,
+    }]},
+    options:opts,
   });
 }
 
-document.getElementById('topPeriodBtns').addEventListener('click', e => {
-  const btn = e.target.closest('.period-btn');
-  if (!btn) return;
-  document.querySelectorAll('#topPeriodBtns .period-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  topPeriod = btn.dataset.p;
-  updateTopChart();
+// ── 期間ボタン ──
+document.getElementById('topPeriodBtns').addEventListener('click',e=>{
+  const btn=e.target.closest('.period-btn'); if(!btn) return;
+  document.querySelectorAll('#topPeriodBtns .period-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); topPeriod=btn.dataset.p; buildTopChart();
+});
+document.getElementById('indexedPeriodBtns').addEventListener('click',e=>{
+  const btn=e.target.closest('.period-btn'); if(!btn) return;
+  document.querySelectorAll('#indexedPeriodBtns .period-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); indexedPeriod=btn.dataset.p; buildIndexedChart();
 });
 
+// ── 初期化 ──
 async function init() {
   try {
-    const resp = await fetch(DATA_URL);
-    if (!resp.ok) throw new Error('HTTP ' + resp.status);
-    rawData = await resp.json();
-  } catch (e) {
-    rawData = generateDemoData();
+    const resp=await fetch(DATA_URL);
+    if(!resp.ok) throw new Error('HTTP '+resp.status);
+    rawData=await resp.json();
+  } catch(e) {
+    rawData=generateDemoData();
   }
-
   processData(rawData);
-
-  const genAt = rawData?.meta?.generated_at;
-  document.getElementById('lastUpdated').textContent =
-    genAt
-      ? '最終更新: ' + new Date(genAt).toLocaleString('ja-JP', {timeZone:'Asia/Tokyo'}) + ' JST'
-      : '最終更新: デモデータ（本番では data_money_supply.json を配置してください）';
-
-  document.getElementById('topLoading').style.display = 'none';
-
+  const genAt=rawData?.meta?.generated_at;
+  document.getElementById('lastUpdated').textContent=genAt
+    ?'最終更新: '+new Date(genAt).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo'})+' JST'
+    :'最終更新: デモデータ';
+  document.getElementById('topLoading').style.display='none';
   buildTopChart();
   buildTable();
+  buildIndexedChart();
   buildCardsGrid();
 }
 
 function generateDemoData() {
-  const series = {};
-  const baselines = {
-    CNM2: 3.2e12/0.1385,  USM2: 8.5e12,         EUM2: 6.0e12/1.105,
-    JPM2: 9.8e12/0.00667, GBM2: 2.8e12/1.27,    KRM2: 1.5e12/0.000735,
-    AUM3: 1.8e12/0.645,   CAM2: 1.2e12/0.738,   RUM2: 0.9e12/0.01095,
-    BRM2: 0.8e12/0.172,
-  };
-  const growth = {
-    CNM2:0.12, USM2:0.055, EUM2:0.05, JPM2:0.03,
-    GBM2:0.05, KRM2:0.07,  AUM3:0.05, CAM2:0.055,
-    RUM2:0.12, BRM2:0.13,
-  };
-
-  TICKERS_INFO.forEach(info => {
-    const records = [];
-    const base = baselines[info.ticker] || 1e12;
-    const gr   = growth[info.ticker] || 0.07;
-    const start = new Date('2008-01-01');
-    let val = base * Math.pow(1/(1+gr), 17);
-    for (let d = new Date(start); d <= new Date(); d.setMonth(d.getMonth()+1)) {
-      val *= (1 + gr/12) * (1 + (Math.random()-0.5)*0.005);
-      records.push([d.toISOString().slice(0,10), Math.round(val)]);
+  const series={};
+  const baselines={CNM2:3.2e12/0.1385,USM2:8.5e12,EUM2:6.0e12/1.105,JPM2:9.8e12/0.00667,GBM2:2.8e12/1.27,KRM2:1.5e12/0.000735,AUM3:1.8e12/0.645,CAM2:1.2e12/0.738,RUM2:0.9e12/0.01095,BRM2:0.8e12/0.172};
+  const growth={CNM2:0.12,USM2:0.055,EUM2:0.05,JPM2:0.03,GBM2:0.05,KRM2:0.07,AUM3:0.05,CAM2:0.055,RUM2:0.12,BRM2:0.13};
+  TICKERS_INFO.forEach(info=>{
+    const records=[]; const base=baselines[info.ticker]||1e12; const gr=growth[info.ticker]||0.07;
+    let val=base*Math.pow(1/(1+gr),17);
+    for(let d=new Date('2008-01-01');d<=new Date();d.setMonth(d.getMonth()+1)){
+      val*=(1+gr/12)*(1+(Math.random()-0.5)*0.005);
+      records.push([d.toISOString().slice(0,10),Math.round(val)]);
     }
-    series[info.ticker] = records;
+    series[info.ticker]=records;
   });
-
-  return {
-    meta: {
-      generated_at: new Date().toISOString(),
-      source: 'デモデータ',
-      fx_rates: FX_FALLBACK,
-    },
-    series,
-  };
+  return {meta:{generated_at:new Date().toISOString(),source:'デモデータ',fx_rates:FX_FALLBACK},series};
 }
 
 init();
