@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install pandas websocket-client requests
+          pip install pandas yfinance websocket-client requests
           curl -L https://github.com/rongardF/tvdatafeed/archive/refs/heads/main.zip -o tvdatafeed.zip
           pip install tvdatafeed.zip
 
