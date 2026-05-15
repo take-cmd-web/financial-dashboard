@@ -481,15 +481,15 @@ const STACK_COLORS = {
 // ══════════════════════════════════════════════════════════
 //  状態
 // ══════════════════════════════════════════════════════════
-let rawData    = null;
-let seriesData = {};     // ticker → [{x: Date, y: number}] (各国通貨建て)
-let seriesUSD  = {};     // ticker → [{x: Date, y: number}] (USD換算済み)
-let fxRates    = {};     // currency → USD rate
-let visibility = {};
-let topPeriod  = '10y';
-let cardPeriod = {};
-let topChartInst = null;
-let cardCharts   = {};
+var rawData    = null;
+var seriesData = {};     // ticker → [{x: Date, y: number}] (各国通貨建て)
+var seriesUSD  = {};     // ticker → [{x: Date, y: number}] (USD換算済み)
+var fxRates    = {};     // currency → USD rate
+var visibility = {};
+var topPeriod  = '10y';
+var cardPeriod = {};
+var topChartInst = null;
+var cardCharts   = {};
 
 // ══════════════════════════════════════════════════════════
 //  ユーティリティ
