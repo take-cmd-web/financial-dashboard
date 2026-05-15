@@ -292,7 +292,10 @@ function baseOptions(isNormalized = false) {
     scales: {
       x: {
         type: "time",
-        time: { tooltipFormat: "yyyy-MM-dd" },
+        time: {
+          tooltipFormat: "yyyy/M/d",
+          displayFormats: { month: "yyyy/M", year: "yyyy/M" },
+        },
         grid: { color: "#e8e6dc", lineWidth: .7 },
         ticks: {
           color: "#b0aea5",
