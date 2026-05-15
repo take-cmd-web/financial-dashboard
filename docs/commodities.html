@@ -294,7 +294,13 @@ function baseOptions(isNormalized = false) {
         type: "time",
         time: {
           tooltipFormat: "yyyy/M/d",
-          displayFormats: { month: "yyyy/M", year: "yyyy/M" },
+          displayFormats: {
+            day:     "yyyy/M/d",
+            week:    "yyyy/M",
+            month:   "yyyy/M",
+            quarter: "yyyy/M",
+            year:    "yyyy",
+          },
         },
         grid: { color: "#e8e6dc", lineWidth: .7 },
         ticks: {
