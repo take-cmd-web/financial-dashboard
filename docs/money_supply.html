@@ -22,27 +22,7 @@
   --muted:   #b0aea5;
   --radius:  8px;
 
-  /* チャート用カラーパレット（19銘柄＋Global） */
-  --c0:  #d97757; /* Global – accent orange */
-  --c1:  #e05252; /* CNM2 中国 */
-  --c2:  #6a9bcc; /* USM2 米国 */
-  --c3:  #f5a623; /* EUM2 欧州 */
-  --c4:  #788c5d; /* JPM2 日本 */
-  --c5:  #9b59b6; /* DEM2 ドイツ */
-  --c6:  #1abc9c; /* GBM2 英国 */
-  --c7:  #e74c8b; /* FRM2 フランス */
-  --c8:  #3498db; /* KRM2 韓国 */
-  --c9:  #e67e22; /* ITM2 イタリア */
-  --c10: #2ecc71; /* CAM2 カナダ */
-  --c11: #c0392b; /* RUM2 ロシア */
-  --c12: #27ae60; /* BRM2 ブラジル */
-  --c13: #8e44ad; /* MXM2 メキシコ */
-  --c14: #f39c12; /* INM2 インド */
-  --c15: #16a085; /* SAM2 サウジ */
-  --c16: #d35400; /* IDM2 インドネシア */
-  --c17: #c0392b; /* TRM2 トルコ */
-  --c18: #7f8c8d; /* ZAM2 南アフリカ */
-  --c19: #2980b9; /* ARM2 アルゼンチン */
+  /* チャート用カラーパレット（16銘柄＋Global） */
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -379,7 +359,7 @@ body {
   <!-- ── トップ：比較チャート ── -->
   <div class="section" id="topSection">
     <div class="top-chart-controls">
-      <div class="section-title" style="margin-bottom:0">比較チャート（USD換算）</div>
+      <div class="section-title" style="margin-bottom:0">米・EU・日・英 積み上げ＋合計（USD換算）</div>
       <div class="period-btns" id="topPeriodBtns">
         <button class="period-btn" data-p="1y">1年</button>
         <button class="period-btn" data-p="5y">5年</button>
@@ -401,11 +381,9 @@ body {
         <thead>
           <tr>
             <th>国 / 地域</th>
-            <th class="num">直近</th>
-            <th class="num">前回</th>
-            <th class="num">観測期間</th>
+            <th class="num">直近 (USD)</th>
+            <th class="num">前回 (USD)</th>
             <th class="num">変化</th>
-            <th class="num">単位</th>
             <th class="cb-cell">表示</th>
           </tr>
         </thead>
@@ -429,48 +407,98 @@ body {
 // ══════════════════════════════════════════════════════════
 const DATA_URL = 'data_money_supply.json';
 
+// 為替レート（各通貨→USD）: 月次取得が理想だが、ここでは代表レートをハードコード
+// 実際のデータは各国通貨建てのため、USD換算に使用
+// ※ EUM2はすでにEUR建て（ECBデータ）なのでEURUSDを掛ける
+// ※ USM2はUSD建てなのでレート=1
+// ※ CNM2はCNY建てなのでCNYUSDを掛ける
+// これらは概算値。精度を上げるには別途FX系列を取得する必要がある。
+// data_money_supply.jsonにfx_ratesフィールドがあれば優先使用する。
+
+// フォールバック用の固定レート（2024年末頃の概算）
+const FX_FALLBACK = {
+  USD: 1,
+  CNY: 0.1385,
+  EUR: 1.105,
+  JPY: 0.00667,
+  GBP: 1.27,
+  KRW: 0.000735,
+  CAD: 0.738,
+  RUB: 0.01095,
+  BRL: 0.172,
+  MXN: 0.0495,
+  INR: 0.01195,
+  SAR: 0.2666,
+  IDR: 0.0000623,
+  TRY: 0.02857,
+  ZAR: 0.0535,
+  ARS: 0.00098,
+};
+
 const TICKERS_INFO = [
-  { ticker:'CNM2', label:'中国',         currency:'CNY' },
-  { ticker:'USM2', label:'米国',         currency:'USD' },
-  { ticker:'EUM2', label:'欧州連合',     currency:'EUR' },
-  { ticker:'JPM2', label:'日本',         currency:'JPY' },
-  { ticker:'DEM2', label:'ドイツ',       currency:'EUR' },
-  { ticker:'GBM2', label:'英国',         currency:'GBP' },
-  { ticker:'FRM2', label:'フランス',     currency:'EUR' },
-  { ticker:'KRM2', label:'韓国',         currency:'KRW' },
-  { ticker:'ITM2', label:'イタリア',     currency:'EUR' },
-  { ticker:'CAM2', label:'カナダ',       currency:'CAD' },
-  { ticker:'RUM2', label:'ロシア',       currency:'RUB' },
-  { ticker:'BRM2', label:'ブラジル',     currency:'BRL' },
-  { ticker:'MXM2', label:'メキシコ',     currency:'MXN' },
-  { ticker:'INM2', label:'インド',       currency:'INR' },
+  { ticker:'CNM2', label:'中国',           currency:'CNY' },
+  { ticker:'USM2', label:'米国',           currency:'USD' },
+  { ticker:'EUM2', label:'EU',             currency:'EUR' },
+  { ticker:'JPM2', label:'日本',           currency:'JPY' },
+  { ticker:'GBM2', label:'英国',           currency:'GBP' },
+  { ticker:'KRM2', label:'韓国',           currency:'KRW' },
+  { ticker:'CAM2', label:'カナダ',         currency:'CAD' },
+  { ticker:'RUM2', label:'ロシア',         currency:'RUB' },
+  { ticker:'BRM2', label:'ブラジル',       currency:'BRL' },
+  { ticker:'MXM2', label:'メキシコ',       currency:'MXN' },
+  { ticker:'INM2', label:'インド',         currency:'INR' },
   { ticker:'SAM2', label:'サウジアラビア', currency:'SAR' },
-  { ticker:'IDM2', label:'インドネシア', currency:'IDR' },
-  { ticker:'TRM2', label:'トルコ',       currency:'TRY' },
-  { ticker:'ZAM2', label:'南アフリカ',   currency:'ZAR' },
-  { ticker:'ARM2', label:'アルゼンチン', currency:'ARS' },
+  { ticker:'IDM2', label:'インドネシア',   currency:'IDR' },
+  { ticker:'TRM2', label:'トルコ',         currency:'TRY' },
+  { ticker:'ZAM2', label:'南アフリカ',     currency:'ZAR' },
+  { ticker:'ARM2', label:'アルゼンチン',   currency:'ARS' },
 ];
 
-// TradingViewのM2データはUSD換算済みで提供される前提
-// 単位：兆USD = T
+// トップチャートの積み上げ対象（米国・EU・日本・英国）
+const STACK_TICKERS = ['USM2','EUM2','JPM2','GBM2'];
+
+// チャートカラー（16銘柄＋合計）
 const COLORS = [
-  '#d97757','#e05252','#6a9bcc','#f5a623','#788c5d',
-  '#9b59b6','#1abc9c','#e74c8b','#3498db','#e67e22',
-  '#2ecc71','#c0392b','#27ae60','#8e44ad','#f39c12',
-  '#16a085','#d35400','#e74c3c','#7f8c8d','#2980b9',
+  '#d97757', // 合計
+  '#e05252', // CNM2 中国
+  '#6a9bcc', // USM2 米国
+  '#f5a623', // EUM2 EU
+  '#788c5d', // JPM2 日本
+  '#1abc9c', // GBM2 英国
+  '#3498db', // KRM2 韓国
+  '#2ecc71', // CAM2 カナダ
+  '#c0392b', // RUM2 ロシア
+  '#27ae60', // BRM2 ブラジル
+  '#8e44ad', // MXM2 メキシコ
+  '#f39c12', // INM2 インド
+  '#16a085', // SAM2 サウジ
+  '#d35400', // IDM2 インドネシア
+  '#e74c3c', // TRM2 トルコ
+  '#7f8c8d', // ZAM2 南アフリカ
+  '#2980b9', // ARM2 アルゼンチン
 ];
 const GLOBAL_COLOR = '#d97757';
+
+// 積み上げ用カラー（USM2・EUM2・JPM2・GBM2）
+const STACK_COLORS = {
+  USM2: '#6a9bcc',
+  EUM2: '#f5a623',
+  JPM2: '#788c5d',
+  GBM2: '#1abc9c',
+};
 
 // ══════════════════════════════════════════════════════════
 //  状態
 // ══════════════════════════════════════════════════════════
-let rawData    = null;   // JSONそのまま
-let seriesData = {};     // ticker → [{x: Date, y: number}]
-let visibility = {};     // ticker → bool
+let rawData    = null;
+let seriesData = {};     // ticker → [{x: Date, y: number}] (各国通貨建て)
+let seriesUSD  = {};     // ticker → [{x: Date, y: number}] (USD換算済み)
+let fxRates    = {};     // currency → USD rate
+let visibility = {};
 let topPeriod  = '10y';
-let cardPeriod = {};     // ticker → period string
+let cardPeriod = {};
 let topChartInst = null;
-let cardCharts   = {};   // ticker → Chart instance
+let cardCharts   = {};
 
 // ══════════════════════════════════════════════════════════
 //  ユーティリティ
@@ -493,38 +521,51 @@ function formatT(v) {
 function formatDate(dateStr) {
   if (!dateStr) return '—';
   const d = new Date(dateStr);
-  return d.getFullYear() + '年' +
-    String(d.getMonth()+1).padStart(2,'0') + '月';
+  return d.getFullYear() + '年' + String(d.getMonth()+1).padStart(2,'0') + '月';
 }
 
 // ══════════════════════════════════════════════════════════
 //  データ処理
 // ══════════════════════════════════════════════════════════
 function processData(json) {
+  // FXレート決定：JSONにfx_ratesがあれば使用、なければフォールバック
+  const storedFX = json.meta?.fx_rates || {};
+  TICKERS_INFO.forEach(info => {
+    fxRates[info.currency] = storedFX[info.currency] ?? FX_FALLBACK[info.currency] ?? 1;
+  });
+
   const series = json.series || {};
+
   TICKERS_INFO.forEach(info => {
     const raw = series[info.ticker] || [];
+    const fx  = fxRates[info.currency] || 1;
     seriesData[info.ticker] = raw.map(([d,v]) => ({
       x: new Date(d), y: v
     })).sort((a,b) => a.x - b.x);
-    visibility[info.ticker] = true; // デフォルト全表示
+
+    // USD換算済みシリーズ
+    seriesUSD[info.ticker] = seriesData[info.ticker].map(pt => ({
+      x: pt.x, y: pt.y * fx
+    }));
+
+    visibility[info.ticker] = true;
   });
 
-  // Global = 全銘柄合計（同じ日付のみ加算）
-  // TradingViewのM2はすでにUSD換算で提供されるため単純合計
+  // 合計 = 全銘柄のUSD換算合計
   const globalMap = {};
   TICKERS_INFO.forEach(info => {
-    seriesData[info.ticker].forEach(pt => {
+    seriesUSD[info.ticker].forEach(pt => {
       const key = pt.x.toISOString().slice(0,7);
       if (!globalMap[key]) globalMap[key] = { x: pt.x, y: 0, cnt: 0 };
       globalMap[key].y   += pt.y;
       globalMap[key].cnt += 1;
     });
   });
-  seriesData['GLOBAL'] = Object.values(globalMap)
-    .filter(p => p.cnt >= 10) // 主要銘柄が揃っている月のみ
+  seriesUSD['GLOBAL'] = Object.values(globalMap)
+    .filter(p => p.cnt >= 8)
     .map(p => ({ x: p.x, y: p.y }))
     .sort((a,b) => a.x - b.x);
+  seriesData['GLOBAL'] = seriesUSD['GLOBAL'];
   visibility['GLOBAL'] = true;
 }
 
@@ -563,10 +604,7 @@ function baseOptions(showLegend = false) {
         bodyFont: { family: 'Lora', size: 12 },
         padding: 10,
         callbacks: {
-          label: ctx => {
-            const v = ctx.parsed.y;
-            return ` ${ctx.dataset.label}: ${formatT(v)} USD`;
-          }
+          label: ctx => ` ${ctx.dataset.label}: ${formatT(ctx.parsed.y)} USD`,
         }
       },
     },
@@ -575,71 +613,68 @@ function baseOptions(showLegend = false) {
         type: 'time',
         time: { unit: 'year', tooltipFormat: 'yyyy年MM月' },
         grid: { color: '#e8e6dc', lineWidth: 0.5 },
-        ticks: {
-          font: { family: 'Poppins', size: 11 },
-          color: '#b0aea5', maxTicksLimit: 10,
-        },
+        ticks: { font: { family: 'Poppins', size: 11 }, color: '#b0aea5', maxTicksLimit: 10 },
         border: { color: '#e8e6dc' },
       },
       y: {
         grid: { color: '#e8e6dc', lineWidth: 0.5 },
-        ticks: {
-          font: { family: 'Poppins', size: 11 },
-          color: '#b0aea5',
-          callback: v => formatT(v),
-        },
+        ticks: { font: { family: 'Poppins', size: 11 }, color: '#b0aea5', callback: v => formatT(v) },
         border: { color: '#e8e6dc' },
       },
     },
   };
 }
 
-function makeDataset(ticker, label, color, pts) {
-  return {
-    label,
-    data: pts,
-    borderColor: color,
-    backgroundColor: color + '18',
-    borderWidth: 2,
-    pointRadius: 0,
-    pointHoverRadius: 4,
-    fill: false,
-    tension: 0.3,
-  };
-}
-
 // ══════════════════════════════════════════════════════════
-//  トップチャート
+//  トップチャート（積み上げ棒グラフ＋合計折れ線）
 // ══════════════════════════════════════════════════════════
 function buildTopChart() {
   const canvas = document.getElementById('topChart');
-  const ctx = canvas.getContext('2d');
-
+  const ctx    = canvas.getContext('2d');
   const datasets = [];
 
-  // Global を最前面
-  const gPts = filterByPeriod(seriesData['GLOBAL'], topPeriod);
+  // 積み上げ（米国・EU・日本・英国）
+  STACK_TICKERS.forEach(t => {
+    const info  = TICKERS_INFO.find(i => i.ticker === t);
+    const color = STACK_COLORS[t];
+    const pts   = filterByPeriod(seriesUSD[t] || [], topPeriod);
+    datasets.push({
+      type: 'bar',
+      label: info?.label || t,
+      data: pts,
+      backgroundColor: color + 'cc',
+      borderColor: color,
+      borderWidth: 0,
+      stack: 'stack1',
+      order: 2,
+      barPercentage: 1.0,
+      categoryPercentage: 1.0,
+    });
+  });
+
+  // 合計折れ線
+  const gPts = filterByPeriod(seriesUSD['GLOBAL'], topPeriod);
   datasets.push({
-    ...makeDataset('GLOBAL', 'Global Total', GLOBAL_COLOR, gPts),
-    borderWidth: 2.5,
-    borderDash: [5,3],
-    order: 0,
+    type: 'line',
+    label: '合計',
+    data: gPts,
+    borderColor: GLOBAL_COLOR,
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    pointRadius: 0,
+    pointHoverRadius: 4,
+    tension: 0.3,
+    order: 1,
   });
 
-  // 各国
-  TICKERS_INFO.forEach((info, i) => {
-    if (!visibility[info.ticker]) return;
-    const pts = filterByPeriod(seriesData[info.ticker], topPeriod);
-    datasets.push(makeDataset(info.ticker, info.label, COLORS[i+1], pts));
-  });
-
-  const opts = baseOptions(false);
-  // カスタムツールチップ：上位N件のみ表示
-  opts.plugins.tooltip.filter = item => true;
+  const opts = baseOptions(true);
+  opts.scales.x.stacked = true;
+  opts.scales.y.stacked = false; // 折れ線と共存させるためfalse
+  opts.scales.x.time.unit = 'year';
 
   if (topChartInst) topChartInst.destroy();
   topChartInst = new Chart(ctx, {
-    type: 'line',
+    type: 'bar',
     data: { datasets },
     options: opts,
   });
@@ -648,49 +683,38 @@ function buildTopChart() {
 
 function updateTopChart() {
   if (!topChartInst) return;
-  const gPts = filterByPeriod(seriesData['GLOBAL'], topPeriod);
-  topChartInst.data.datasets[0].data = gPts;
-  TICKERS_INFO.forEach((info, i) => {
-    const ds = topChartInst.data.datasets[i+1];
-    if (!ds) return;
-    ds.data = filterByPeriod(seriesData[info.ticker], topPeriod);
-    ds.hidden = !visibility[info.ticker];
+  STACK_TICKERS.forEach((t, i) => {
+    topChartInst.data.datasets[i].data = filterByPeriod(seriesUSD[t] || [], topPeriod);
   });
+  topChartInst.data.datasets[STACK_TICKERS.length].data =
+    filterByPeriod(seriesUSD['GLOBAL'], topPeriod);
   topChartInst.update();
 }
 
 // ══════════════════════════════════════════════════════════
-//  表
+//  表（USD換算値を表示）
 // ══════════════════════════════════════════════════════════
 function buildTable() {
   const tbody = document.getElementById('tableBody');
   tbody.innerHTML = '';
 
-  // Global 行
-  const gPts  = seriesData['GLOBAL'];
+  // 合計行
+  const gPts  = seriesUSD['GLOBAL'];
   const gLast = gPts[gPts.length-1];
   const gPrev = gPts[gPts.length-2];
-  const gRow  = makeTableRow(
-    'GLOBAL', 'グローバル合計', '', GLOBAL_COLOR,
-    gLast?.y, gPrev?.y, gLast?.x
-  );
-  tbody.appendChild(gRow);
+  tbody.appendChild(makeTableRow('GLOBAL', '合計', '', GLOBAL_COLOR, gLast?.y, gPrev?.y));
 
   TICKERS_INFO.forEach((info, i) => {
-    const pts  = seriesData[info.ticker];
+    const pts  = seriesUSD[info.ticker];
     const last = pts[pts.length-1];
     const prev = pts[pts.length-2];
-    const row  = makeTableRow(
-      info.ticker, info.label, info.ticker, COLORS[i+1],
-      last?.y, prev?.y, last?.x
-    );
-    tbody.appendChild(row);
+    tbody.appendChild(makeTableRow(info.ticker, info.label, info.ticker, COLORS[i+1], last?.y, prev?.y));
   });
 
   document.getElementById('tableSection').style.display = 'block';
 }
 
-function makeTableRow(ticker, label, tickerBadge, color, latestVal, prevVal, latestDate) {
+function makeTableRow(ticker, label, tickerBadge, color, latestVal, prevVal) {
   const tr = document.createElement('tr');
   tr.dataset.ticker = ticker;
   if (ticker !== 'GLOBAL' && !visibility[ticker]) tr.classList.add('row-hidden');
@@ -698,10 +722,7 @@ function makeTableRow(ticker, label, tickerBadge, color, latestVal, prevVal, lat
   const chg      = (latestVal != null && prevVal != null) ? latestVal - prevVal : null;
   const chgPct   = (chg != null && prevVal) ? (chg/prevVal*100) : null;
   const chgClass = chg == null ? '' : chg >= 0 ? 'change-pos' : 'change-neg';
-  const chgStr   = chgPct != null
-    ? (chg >= 0 ? '+' : '') + chgPct.toFixed(1) + '%'
-    : '—';
-
+  const chgStr   = chgPct != null ? (chg >= 0 ? '+' : '') + chgPct.toFixed(1) + '%' : '—';
   const isGlobal = ticker === 'GLOBAL';
   const checked  = isGlobal ? true : visibility[ticker];
 
@@ -713,11 +734,9 @@ function makeTableRow(ticker, label, tickerBadge, color, latestVal, prevVal, lat
         ${tickerBadge ? `<span class="ticker-badge">${tickerBadge}</span>` : ''}
       </div>
     </td>
-    <td class="val-cell">${formatT(latestVal)}<span class="unit">USD</span></td>
-    <td class="val-cell">${formatT(prevVal)}<span class="unit">USD</span></td>
-    <td class="date-cell">${formatDate(latestDate?.toISOString?.())}</td>
+    <td class="val-cell">${formatT(latestVal)}<span class="unit"> USD</span></td>
+    <td class="val-cell">${formatT(prevVal)}<span class="unit"> USD</span></td>
     <td class="change-cell ${chgClass}">${chgStr}</td>
-    <td class="date-cell">月次</td>
     <td class="cb-cell">
       <div class="cb-wrap ${checked ? 'checked' : ''}" data-ticker="${ticker}">
         <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
@@ -727,51 +746,35 @@ function makeTableRow(ticker, label, tickerBadge, color, latestVal, prevVal, lat
     </td>
   `;
 
-  // チェックボックス イベント
   if (!isGlobal) {
-    const cb = tr.querySelector('.cb-wrap');
-    cb.addEventListener('click', () => toggleVisibility(ticker));
+    tr.querySelector('.cb-wrap').addEventListener('click', () => toggleVisibility(ticker));
   }
-
   return tr;
 }
 
 function toggleVisibility(ticker) {
   visibility[ticker] = !visibility[ticker];
-
-  // 表の行スタイル
   const tr = document.querySelector(`tr[data-ticker="${ticker}"]`);
   if (tr) tr.classList.toggle('row-hidden', !visibility[ticker]);
-
-  // チェックボックス
   const cb = document.querySelector(`.cb-wrap[data-ticker="${ticker}"]`);
   if (cb) cb.classList.toggle('checked', visibility[ticker]);
-
-  // トップチャート更新
-  updateTopChart();
-
-  // カードチャート表示切り替えは個別チャートなので不要
   const card = document.getElementById('card-' + ticker);
   if (card) card.style.opacity = visibility[ticker] ? '1' : '0.4';
 }
 
 // ══════════════════════════════════════════════════════════
-//  個別カードチャート
+//  個別カードチャート（各国通貨建てのまま）
 // ══════════════════════════════════════════════════════════
 function buildCardsGrid() {
   const grid = document.getElementById('chartsGrid');
   grid.innerHTML = '';
 
-  // Global カードを先頭
-  grid.appendChild(makeCard('GLOBAL', 'グローバル合計', '', GLOBAL_COLOR));
-
+  grid.appendChild(makeCard('GLOBAL', '合計', '', GLOBAL_COLOR));
   TICKERS_INFO.forEach((info, i) => {
     grid.appendChild(makeCard(info.ticker, info.label, info.ticker, COLORS[i+1]));
   });
 
   grid.style.display = 'grid';
-
-  // 少し遅延して描画（DOM反映後）
   requestAnimationFrame(() => {
     renderCard('GLOBAL');
     TICKERS_INFO.forEach(info => renderCard(info.ticker));
@@ -779,12 +782,15 @@ function buildCardsGrid() {
 }
 
 function makeCard(ticker, label, tickerBadge, color) {
-  const pts    = seriesData[ticker] || [];
-  const last   = pts[pts.length-1];
-  const prev   = pts[pts.length-2];
-  const chg    = (last && prev) ? ((last.y - prev.y)/prev.y*100) : null;
+  // カードはUSD換算値を使用
+  const pts  = seriesUSD[ticker] || [];
+  const last = pts[pts.length-1];
+  const prev = pts[pts.length-2];
+  const chg  = (last && prev) ? ((last.y - prev.y)/prev.y*100) : null;
   const chgStr = chg != null ? (chg>=0?'+':'') + chg.toFixed(1)+'%' : '';
   const chgCls = chg != null ? (chg>=0?'change-pos':'change-neg') : '';
+  const info = TICKERS_INFO.find(t => t.ticker === ticker);
+  const currLabel = info ? info.currency : '';
 
   cardPeriod[ticker] = '10y';
 
@@ -797,7 +803,7 @@ function makeCard(ticker, label, tickerBadge, color) {
         <div class="dot" style="background:${color}"></div>
         <div>
           <div class="chart-card-name">${label}</div>
-          ${tickerBadge ? `<div class="chart-card-ticker">${tickerBadge} · 月次</div>` : '<div class="chart-card-ticker">月次</div>'}
+          <div class="chart-card-ticker">${tickerBadge ? tickerBadge + ' · ' : ''}月次</div>
         </div>
       </div>
       <div class="chart-card-val">
@@ -816,7 +822,6 @@ function makeCard(ticker, label, tickerBadge, color) {
     </div>
   `;
 
-  // 期間ボタン イベント
   div.querySelectorAll('.period-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       div.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
@@ -834,22 +839,15 @@ function renderCard(ticker) {
   if (!canvas) return;
 
   const isGlobal = ticker === 'GLOBAL';
-  const color    = isGlobal ? GLOBAL_COLOR
-    : COLORS[TICKERS_INFO.findIndex(t => t.ticker === ticker) + 1];
-  const label    = isGlobal ? 'グローバル合計'
-    : TICKERS_INFO.find(t => t.ticker === ticker)?.label || ticker;
-
+  const color = isGlobal ? GLOBAL_COLOR : COLORS[TICKERS_INFO.findIndex(t => t.ticker === ticker) + 1];
+  const label = isGlobal ? '合計' : TICKERS_INFO.find(t => t.ticker === ticker)?.label || ticker;
   const period = cardPeriod[ticker] || '10y';
-  const pts    = filterByPeriod(seriesData[ticker] || [], period);
+  const pts = filterByPeriod(seriesUSD[ticker] || [], period);
 
-  if (cardCharts[ticker]) {
-    cardCharts[ticker].destroy();
-    delete cardCharts[ticker];
-  }
+  if (cardCharts[ticker]) { cardCharts[ticker].destroy(); delete cardCharts[ticker]; }
 
   const opts = baseOptions(false);
-  opts.plugins.tooltip.callbacks.label = ctx =>
-    ` ${label}: ${formatT(ctx.parsed.y)} USD`;
+  opts.plugins.tooltip.callbacks.label = ctx => ` ${label}: ${formatT(ctx.parsed.y)} USD`;
   opts.scales.x.ticks.maxTicksLimit = 6;
   opts.scales.y.ticks.maxTicksLimit = 5;
 
@@ -893,20 +891,17 @@ async function init() {
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     rawData = await resp.json();
   } catch (e) {
-    // --- デモ用ダミーデータ ---
     rawData = generateDemoData();
   }
 
   processData(rawData);
 
-  // 最終更新日
   const genAt = rawData?.meta?.generated_at;
   document.getElementById('lastUpdated').textContent =
     genAt
       ? '最終更新: ' + new Date(genAt).toLocaleString('ja-JP', {timeZone:'Asia/Tokyo'}) + ' JST'
       : '最終更新: デモデータ（本番では data_money_supply.json を配置してください）';
 
-  // ローディング非表示
   document.getElementById('topLoading').style.display = 'none';
 
   buildTopChart();
@@ -915,32 +910,32 @@ async function init() {
 }
 
 // ══════════════════════════════════════════════════════════
-//  デモデータ生成（JSON未配置時のフォールバック）
+//  デモデータ生成
 // ══════════════════════════════════════════════════════════
 function generateDemoData() {
   const series = {};
-  // ベースライン（兆USD単位の典型値）
+  // 各国通貨建てのベースライン（実態に近い値）
   const baselines = {
-    CNM2: 3.2e12, USM2: 8.5e12, EUM2: 6.0e12, JPM2: 9.8e12,
-    DEM2: 2.2e12, GBM2: 2.8e12, FRM2: 2.0e12, KRM2: 1.5e12,
-    ITM2: 1.3e12, CAM2: 1.2e12, RUM2: 0.9e12, BRM2: 0.8e12,
-    MXM2: 0.55e12,INM2: 0.9e12, SAM2: 0.6e12, IDM2: 0.5e12,
-    TRM2: 0.35e12,ZAM2: 0.25e12,ARM2: 0.18e12,
+    CNM2: 3.2e12/0.1385,  USM2: 8.5e12,         EUM2: 6.0e12/1.105,
+    JPM2: 9.8e12/0.00667, GBM2: 2.8e12/1.27,    KRM2: 1.5e12/0.000735,
+    CAM2: 1.2e12/0.738,   RUM2: 0.9e12/0.01095, BRM2: 0.8e12/0.172,
+    MXM2: 0.55e12/0.0495, INM2: 0.9e12/0.01195, SAM2: 0.6e12/0.2666,
+    IDM2: 0.5e12/0.0000623,TRM2: 0.35e12/0.02857,ZAM2:0.25e12/0.0535,
+    ARM2: 0.18e12/0.00098,
   };
   const growth = {
     CNM2:0.12, USM2:0.055, EUM2:0.05, JPM2:0.03,
-    DEM2:0.04, GBM2:0.05, FRM2:0.04, KRM2:0.07,
-    ITM2:0.03, CAM2:0.055,RUM2:0.12, BRM2:0.13,
-    MXM2:0.10, INM2:0.12, SAM2:0.06, IDM2:0.12,
-    TRM2:0.20, ZAM2:0.10, ARM2:0.40,
+    GBM2:0.05, KRM2:0.07,  CAM2:0.055,RUM2:0.12,
+    BRM2:0.13, MXM2:0.10,  INM2:0.12, SAM2:0.06,
+    IDM2:0.12, TRM2:0.20,  ZAM2:0.10, ARM2:0.40,
   };
 
   TICKERS_INFO.forEach(info => {
     const records = [];
-    const base    = baselines[info.ticker] || 1e12;
-    const gr      = growth[info.ticker]   || 0.07;
-    const start   = new Date('2008-01-01');
-    let val       = base * Math.pow(1/(1+gr), 17); // 2008年時点の値に逆算
+    const base = baselines[info.ticker] || 1e12;
+    const gr   = growth[info.ticker] || 0.07;
+    const start = new Date('2008-01-01');
+    let val = base * Math.pow(1/(1+gr), 17);
     for (let d = new Date(start); d <= new Date(); d.setMonth(d.getMonth()+1)) {
       val *= (1 + gr/12) * (1 + (Math.random()-0.5)*0.005);
       records.push([d.toISOString().slice(0,10), Math.round(val)]);
@@ -949,7 +944,11 @@ function generateDemoData() {
   });
 
   return {
-    meta: { generated_at: new Date().toISOString(), source: 'デモデータ' },
+    meta: {
+      generated_at: new Date().toISOString(),
+      source: 'デモデータ',
+      fx_rates: FX_FALLBACK,
+    },
     series,
   };
 }
