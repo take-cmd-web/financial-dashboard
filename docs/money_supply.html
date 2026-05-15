@@ -424,6 +424,7 @@ const FX_FALLBACK = {
   GBP: 1.27,
   KRW: 0.000735,
   CAD: 0.738,
+  AUD: 0.645,
   RUB: 0.01095,
   BRL: 0.172,
   MXN: 0.0495,
@@ -442,13 +443,14 @@ const TICKERS_INFO = [
   { ticker:'JPM2', label:'日本',   currency:'JPY' },
   { ticker:'GBM2', label:'英国',   currency:'GBP' },
   { ticker:'CAM2', label:'カナダ', currency:'CAD' },
+  { ticker:'AUM2', label:'豪州',   currency:'AUD' },
   { ticker:'KRM2', label:'韓国',   currency:'KRW' },
   { ticker:'RUM2', label:'ロシア', currency:'RUB' },
   { ticker:'BRM2', label:'ブラジル', currency:'BRL' },
 ];
 
 // トップチャートの積み上げ対象（全9カ国）
-const STACK_TICKERS = ['CNM2','USM2','EUM2','JPM2','GBM2','CAM2','KRM2','RUM2','BRM2'];
+const STACK_TICKERS = ['CNM2','USM2','EUM2','JPM2','GBM2','CAM2','AUM2','KRM2','RUM2','BRM2'];
 
 // チャートカラー（9カ国＋合計）
 const COLORS = [
@@ -459,6 +461,7 @@ const COLORS = [
   '#788c5d', // JPM2 日本
   '#1abc9c', // GBM2 英国
   '#9b59b6', // CAM2 カナダ
+  '#e67e22', // AUM2 豪州
   '#3498db', // KRM2 韓国
   '#c0392b', // RUM2 ロシア
   '#27ae60', // BRM2 ブラジル
@@ -473,6 +476,7 @@ const STACK_COLORS = {
   JPM2: '#788c5d',
   GBM2: '#1abc9c',
   CAM2: '#9b59b6',
+  AUM2: '#e67e22',
   KRM2: '#3498db',
   RUM2: '#c0392b',
   BRM2: '#27ae60',
@@ -978,7 +982,7 @@ function generateDemoData() {
   };
   const growth = {
     CNM2:0.12, USM2:0.055, EUM2:0.05, JPM2:0.03,
-    GBM2:0.05, CAM2:0.055, KRM2:0.07, RUM2:0.12,
+    GBM2:0.05, CAM2:0.055, AUM2:0.05, KRM2:0.07, RUM2:0.12,
     BRM2:0.13,
   };
 
