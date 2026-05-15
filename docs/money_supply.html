@@ -543,36 +543,51 @@ function processData(json) {
   });
 
   // 合計 = 全銘柄のUSD換算合計（forward fill: データ欠損月は直前値を使用）
-  // 全月リストを生成
+  // 月キーをYYYY-MM形式で統一（ローカル時刻基準でずれないよう文字列から生成）
+  function toMonthKey(dateOrStr) {
+    if (typeof dateOrStr === 'string') return dateOrStr.slice(0,7);
+    const d = dateOrStr;
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+  }
+
+  // 各銘柄の月→値マップを先に作成（O(n)）
+  const tickerMonthMap = {};
+  TICKERS_INFO.forEach(info => {
+    tickerMonthMap[info.ticker] = {};
+    seriesUSD[info.ticker].forEach(pt => {
+      tickerMonthMap[info.ticker][toMonthKey(pt.x)] = pt.y;
+    });
+  });
+
+  // 全月リストを生成してソート
   const allMonths = new Set();
   TICKERS_INFO.forEach(info => {
-    seriesUSD[info.ticker].forEach(pt => {
-      allMonths.add(pt.x.toISOString().slice(0,7));
-    });
+    Object.keys(tickerMonthMap[info.ticker]).forEach(m => allMonths.add(m));
   });
   const sortedMonths = Array.from(allMonths).sort();
 
-  // 各銘柄の月→値マップ（forward fill済み）
+  // forward fill: 各銘柄で欠損月に直前値を補完
   const filledMap = {};
   TICKERS_INFO.forEach(info => {
     filledMap[info.ticker] = {};
     let lastVal = null;
     sortedMonths.forEach(month => {
-      const pt = seriesUSD[info.ticker].find(p => p.x.toISOString().slice(0,7) === month);
-      if (pt) lastVal = pt.y;
+      const v = tickerMonthMap[info.ticker][month];
+      if (v != null) lastVal = v;
       if (lastVal !== null) filledMap[info.ticker][month] = lastVal;
     });
   });
 
-  // 月ごとに合計（全銘柄が揃っている月のみ）
+  // 月ごとに合計（8カ国以上揃っている月のみ）
   seriesUSD['GLOBAL'] = sortedMonths
     .map(month => {
-      const sum = TICKERS_INFO.reduce((acc, info) => {
+      let sum = 0;
+      let cnt = 0;
+      TICKERS_INFO.forEach(info => {
         const v = filledMap[info.ticker][month];
-        return v != null ? acc + v : acc;
-      }, 0);
-      const cnt = TICKERS_INFO.filter(info => filledMap[info.ticker][month] != null).length;
-      return { x: new Date(month + '-01'), y: sum, cnt };
+        if (v != null) { sum += v; cnt++; }
+      });
+      return { x: new Date(month + '-02'), y: sum, cnt }; // -02で UTC→JST ずれ回避
     })
     .filter(p => p.cnt >= 8)
     .map(p => ({ x: p.x, y: p.y }))
