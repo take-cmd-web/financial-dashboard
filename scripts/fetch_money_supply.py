@@ -67,7 +67,9 @@ def fetch_series(tv: TvDatafeed, ticker: str, n_bars: int) -> pd.DataFrame | Non
 
 
 def df_to_records(df: pd.DataFrame, since: str | None) -> list:
-    """DataFrame を [[date_str, value], ...] に変換し、since 以降のみ返す。"""
+    """DataFrame を [[date_str, value], ...] に変換し、since 以降のみ返す。
+    ただし過去6ヶ月分は常に再取得して上書き対象にする。
+    """
     if df is None or df.empty:
         return []
 
@@ -84,9 +86,10 @@ def df_to_records(df: pd.DataFrame, since: str | None) -> list:
     # START_DATE フィルタ
     df = df[df.index >= pd.Timestamp(START_DATE)]
 
-    # 差分フィルタ：既存最終日付より後のみ
+    # 差分フィルタ：6ヶ月前より後のデータを返す（過去6ヶ月は常に再取得）
     if since:
-        df = df[df.index > pd.Timestamp(since)]
+        six_months_ago = pd.Timestamp(since) - pd.DateOffset(months=6)
+        df = df[df.index > six_months_ago]
 
     records = [
         [row.strftime("%Y-%m-%d"), round(float(val), 4)]
@@ -131,13 +134,16 @@ def main():
         new_rec = df_to_records(df, since)
 
         if new_rec:
-            series[ticker] = current + new_rec
-            print(f"    → {len(new_rec)} 件追加（累計 {len(series[ticker])} 件）")
+            # 過去6ヶ月分は上書きマージ（既存データの該当月を新データで置換）
+            new_dates = {r[0] for r in new_rec}
+            kept = [r for r in current if r[0] not in new_dates]
+            merged = sorted(kept + new_rec, key=lambda r: r[0])
+            series[ticker] = merged
+            print(f"    → {len(new_rec)} 件更新（累計 {len(series[ticker])} 件）")
             updated += 1
         else:
             print(f"    → 新規データなし（スキップ）")
             skipped += 1
-            # 既存データがなければ空配列で初期化
             if ticker not in series:
                 series[ticker] = []
 

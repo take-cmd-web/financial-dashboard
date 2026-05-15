@@ -551,17 +551,38 @@ function processData(json) {
     visibility[info.ticker] = true;
   });
 
-  // 合計 = 全銘柄のUSD換算合計
-  const globalMap = {};
+  // 合計 = 全銘柄のUSD換算合計（forward fill: データ欠損月は直前値を使用）
+  // 全月リストを生成
+  const allMonths = new Set();
   TICKERS_INFO.forEach(info => {
     seriesUSD[info.ticker].forEach(pt => {
-      const key = pt.x.toISOString().slice(0,7);
-      if (!globalMap[key]) globalMap[key] = { x: pt.x, y: 0, cnt: 0 };
-      globalMap[key].y   += pt.y;
-      globalMap[key].cnt += 1;
+      allMonths.add(pt.x.toISOString().slice(0,7));
     });
   });
-  seriesUSD['GLOBAL'] = Object.values(globalMap)
+  const sortedMonths = Array.from(allMonths).sort();
+
+  // 各銘柄の月→値マップ（forward fill済み）
+  const filledMap = {};
+  TICKERS_INFO.forEach(info => {
+    filledMap[info.ticker] = {};
+    let lastVal = null;
+    sortedMonths.forEach(month => {
+      const pt = seriesUSD[info.ticker].find(p => p.x.toISOString().slice(0,7) === month);
+      if (pt) lastVal = pt.y;
+      if (lastVal !== null) filledMap[info.ticker][month] = lastVal;
+    });
+  });
+
+  // 月ごとに合計（全銘柄が揃っている月のみ）
+  seriesUSD['GLOBAL'] = sortedMonths
+    .map(month => {
+      const sum = TICKERS_INFO.reduce((acc, info) => {
+        const v = filledMap[info.ticker][month];
+        return v != null ? acc + v : acc;
+      }, 0);
+      const cnt = TICKERS_INFO.filter(info => filledMap[info.ticker][month] != null).length;
+      return { x: new Date(month + '-01'), y: sum, cnt };
+    })
     .filter(p => p.cnt >= 14)
     .map(p => ({ x: p.x, y: p.y }))
     .sort((a,b) => a.x - b.x);
