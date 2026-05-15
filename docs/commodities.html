@@ -453,20 +453,20 @@ function buildGscpiCard() {
   const color  = "#788c5d";  // accent3 グリーン
   const series = gscpiData;
   const last   = series.at(-1);
-  indivMonths[name] = 6;
+  indivMonths[name] = 60; // 初期：5Y
 
   const card = document.createElement("div");
   card.className = "chart-card";
 
   const btnHtml = RANGE_OPTIONS.map(({ label, months }) =>
-    `<button class="card-range-btn${months === 6 ? ' active' : ''}" data-months="${months}">${label}</button>`
+    `<button class="card-range-btn${months === 60 ? ' active' : ''}" data-months="${months}">${label}</button>`
   ).join("");
 
   card.innerHTML = `
     <div class="chart-card-header">
       <h3>
         <span class="card-dot" style="background:${color}"></span>
-        グローバルSC圧力指数 (GSCPI)
+        サプライチェーン指数 (GSCPI)
       </h3>
       <div class="card-right">
         <span class="last-val">${last ? Number(last[1]).toLocaleString("ja-JP", { maximumFractionDigits: 2 }) : "—"}</span>
@@ -486,7 +486,7 @@ function buildGscpiCard() {
     });
   });
 
-  const points = filterByRange(series, 6).map(([d, v]) => ({ x: d, y: v }));
+  const points = filterByRange(series, 60).map(([d, v]) => ({ x: d, y: v }));
   const ctx    = card.querySelector("canvas").getContext("2d");
   indivCharts[name] = new Chart(ctx, {
     type: "line",
