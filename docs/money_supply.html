@@ -562,7 +562,7 @@ function processData(json) {
     });
   });
   seriesUSD['GLOBAL'] = Object.values(globalMap)
-    .filter(p => p.cnt >= 8)
+    .filter(p => p.cnt >= 14)
     .map(p => ({ x: p.x, y: p.y }))
     .sort((a,b) => a.x - b.x);
   seriesData['GLOBAL'] = seriesUSD['GLOBAL'];
@@ -669,7 +669,7 @@ function buildTopChart() {
 
   const opts = baseOptions(true);
   opts.scales.x.stacked = true;
-  opts.scales.y.stacked = false; // 折れ線と共存させるためfalse
+  opts.scales.y.stacked = true;
   opts.scales.x.time.unit = 'year';
 
   if (topChartInst) topChartInst.destroy();
@@ -746,9 +746,7 @@ function makeTableRow(ticker, label, tickerBadge, color, latestVal, prevVal) {
     </td>
   `;
 
-  if (!isGlobal) {
-    tr.querySelector('.cb-wrap').addEventListener('click', () => toggleVisibility(ticker));
-  }
+  tr.querySelector('.cb-wrap').addEventListener('click', () => toggleVisibility(ticker));
   return tr;
 }
 
@@ -760,6 +758,16 @@ function toggleVisibility(ticker) {
   if (cb) cb.classList.toggle('checked', visibility[ticker]);
   const card = document.getElementById('card-' + ticker);
   if (card) card.style.opacity = visibility[ticker] ? '1' : '0.4';
+
+  // トップチャートの該当データセットを表示/非表示
+  if (topChartInst) {
+    if (ticker === 'GLOBAL') {
+      // 合計は最後のデータセット（折れ線）
+      const ds = topChartInst.data.datasets[STACK_TICKERS.length];
+      if (ds) ds.hidden = !visibility[ticker];
+    }
+    topChartInst.update();
+  }
 }
 
 // ══════════════════════════════════════════════════════════
