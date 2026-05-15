@@ -240,10 +240,16 @@ const OVERVIEW_TICKERS = INDIV_TICKERS;
 const CHIP_TICKERS = INDIV_TICKERS.filter(t => t.name !== "GSCI");
 
 const PALETTE = [
-  "#141413",              // GSCI：ほぼ黒
-  "#d97757","#c4603e","#e8a882",
-  "#6a9bcc","#4a7fae","#92b8de",
-  "#788c5d","#5a7243","#9db87c",
+  "#141413",   // GSCI
+  "#d97757",   // 原油 (WTI)
+  "#a0a09a",   // 天然ガス：グレー
+  "#b07d3a",   // 銅：ブロンズ
+  "#6a9bcc",   // 金
+  "#4a7fae",   // 銀
+  "#92b8de",   // プラチナ
+  "#788c5d",   // トウモロコシ
+  "#5a7243",   // 小麦
+  "#9db87c",   // 大豆
 ];
 const COLOR_MAP = Object.fromEntries(INDIV_TICKERS.map((t, i) => [t.name, PALETTE[i]]));
 
@@ -261,7 +267,8 @@ let overviewChart = null;
 let indivCharts   = {};
 let overviewMonths = 6;   // 初期：6M
 let indivMonths    = {};  // name → months
-let visibility     = Object.fromEntries(INDIV_TICKERS.map(t => [t.name, true]));
+const DEFAULT_VISIBLE = new Set(["GSCI", "原油 (WTI)", "天然ガス", "金", "銅"]);
+let visibility     = Object.fromEntries(INDIV_TICKERS.map(t => [t.name, DEFAULT_VISIBLE.has(t.name)]));
 
 // ── ユーティリティ ────────────────────────────────────
 
@@ -441,12 +448,13 @@ function buildToggles() {
   INDIV_TICKERS.forEach(({ name }) => {
     const color = COLOR_MAP[name];
     const chip  = document.createElement("label");
-    chip.className = "toggle-chip active";
-    chip.style.background  = color;
-    chip.style.borderColor = color;
+    const isActive = visibility[name];
+    chip.className = "toggle-chip" + (isActive ? " active" : "");
+    chip.style.background  = isActive ? color : "";
+    chip.style.borderColor = isActive ? color : "";
     chip.innerHTML = `
-      <input type="checkbox" checked>
-      <span class="chip-dot" style="background:#fff"></span>
+      <input type="checkbox" ${isActive ? "checked" : ""}>
+      <span class="chip-dot" style="background:${isActive ? "#fff" : color}"></span>
       ${name}
     `;
     chip.querySelector("input").addEventListener("change", e => {
