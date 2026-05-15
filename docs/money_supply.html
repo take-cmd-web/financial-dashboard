@@ -359,7 +359,7 @@ body {
   <!-- ── トップ：比較チャート ── -->
   <div class="section" id="topSection">
     <div class="top-chart-controls">
-      <div class="section-title" style="margin-bottom:0">米・EU・日・英 積み上げ＋合計（USD換算）</div>
+      <div class="section-title" style="margin-bottom:0">主要9カ国 積み上げ＋合計（USD換算）</div>
       <div class="period-btns" id="topPeriodBtns">
         <button class="period-btn" data-p="1y">1年</button>
         <button class="period-btn" data-p="5y">5年</button>
@@ -436,28 +436,21 @@ const FX_FALLBACK = {
 };
 
 const TICKERS_INFO = [
-  { ticker:'CNM2', label:'中国',           currency:'CNY' },
-  { ticker:'USM2', label:'米国',           currency:'USD' },
-  { ticker:'EUM2', label:'EU',             currency:'EUR' },
-  { ticker:'JPM2', label:'日本',           currency:'JPY' },
-  { ticker:'GBM2', label:'英国',           currency:'GBP' },
-  { ticker:'KRM2', label:'韓国',           currency:'KRW' },
-  { ticker:'CAM2', label:'カナダ',         currency:'CAD' },
-  { ticker:'RUM2', label:'ロシア',         currency:'RUB' },
-  { ticker:'BRM2', label:'ブラジル',       currency:'BRL' },
-  { ticker:'MXM2', label:'メキシコ',       currency:'MXN' },
-  { ticker:'INM2', label:'インド',         currency:'INR' },
-  { ticker:'SAM2', label:'サウジアラビア', currency:'SAR' },
-  { ticker:'IDM2', label:'インドネシア',   currency:'IDR' },
-  { ticker:'TRM2', label:'トルコ',         currency:'TRY' },
-  { ticker:'ZAM2', label:'南アフリカ',     currency:'ZAR' },
-  { ticker:'ARM2', label:'アルゼンチン',   currency:'ARS' },
+  { ticker:'CNM2', label:'中国',   currency:'CNY' },
+  { ticker:'USM2', label:'米国',   currency:'USD' },
+  { ticker:'EUM2', label:'EU',     currency:'EUR' },
+  { ticker:'JPM2', label:'日本',   currency:'JPY' },
+  { ticker:'GBM2', label:'英国',   currency:'GBP' },
+  { ticker:'CAM2', label:'カナダ', currency:'CAD' },
+  { ticker:'KRM2', label:'韓国',   currency:'KRW' },
+  { ticker:'RUM2', label:'ロシア', currency:'RUB' },
+  { ticker:'BRM2', label:'ブラジル', currency:'BRL' },
 ];
 
-// トップチャートの積み上げ対象（米国・EU・日本・英国）
-const STACK_TICKERS = ['USM2','EUM2','JPM2','GBM2'];
+// トップチャートの積み上げ対象（全9カ国）
+const STACK_TICKERS = ['CNM2','USM2','EUM2','JPM2','GBM2','CAM2','KRM2','RUM2','BRM2'];
 
-// チャートカラー（16銘柄＋合計）
+// チャートカラー（9カ国＋合計）
 const COLORS = [
   '#d97757', // 合計
   '#e05252', // CNM2 中国
@@ -465,26 +458,24 @@ const COLORS = [
   '#f5a623', // EUM2 EU
   '#788c5d', // JPM2 日本
   '#1abc9c', // GBM2 英国
+  '#9b59b6', // CAM2 カナダ
   '#3498db', // KRM2 韓国
-  '#2ecc71', // CAM2 カナダ
   '#c0392b', // RUM2 ロシア
   '#27ae60', // BRM2 ブラジル
-  '#8e44ad', // MXM2 メキシコ
-  '#f39c12', // INM2 インド
-  '#16a085', // SAM2 サウジ
-  '#d35400', // IDM2 インドネシア
-  '#e74c3c', // TRM2 トルコ
-  '#7f8c8d', // ZAM2 南アフリカ
-  '#2980b9', // ARM2 アルゼンチン
 ];
 const GLOBAL_COLOR = '#d97757';
 
-// 積み上げ用カラー（USM2・EUM2・JPM2・GBM2）
+// 積み上げ用カラー（全9カ国）
 const STACK_COLORS = {
+  CNM2: '#e05252',
   USM2: '#6a9bcc',
   EUM2: '#f5a623',
   JPM2: '#788c5d',
   GBM2: '#1abc9c',
+  CAM2: '#9b59b6',
+  KRM2: '#3498db',
+  RUM2: '#c0392b',
+  BRM2: '#27ae60',
 };
 
 // ══════════════════════════════════════════════════════════
@@ -583,7 +574,7 @@ function processData(json) {
       const cnt = TICKERS_INFO.filter(info => filledMap[info.ticker][month] != null).length;
       return { x: new Date(month + '-01'), y: sum, cnt };
     })
-    .filter(p => p.cnt >= 14)
+    .filter(p => p.cnt >= 8)
     .map(p => ({ x: p.x, y: p.y }))
     .sort((a,b) => a.x - b.x);
   seriesData['GLOBAL'] = seriesUSD['GLOBAL'];
@@ -946,17 +937,13 @@ function generateDemoData() {
   // 各国通貨建てのベースライン（実態に近い値）
   const baselines = {
     CNM2: 3.2e12/0.1385,  USM2: 8.5e12,         EUM2: 6.0e12/1.105,
-    JPM2: 9.8e12/0.00667, GBM2: 2.8e12/1.27,    KRM2: 1.5e12/0.000735,
-    CAM2: 1.2e12/0.738,   RUM2: 0.9e12/0.01095, BRM2: 0.8e12/0.172,
-    MXM2: 0.55e12/0.0495, INM2: 0.9e12/0.01195, SAM2: 0.6e12/0.2666,
-    IDM2: 0.5e12/0.0000623,TRM2: 0.35e12/0.02857,ZAM2:0.25e12/0.0535,
-    ARM2: 0.18e12/0.00098,
+    JPM2: 9.8e12/0.00667, GBM2: 2.8e12/1.27,    CAM2: 1.2e12/0.738,
+    KRM2: 1.5e12/0.000735,RUM2: 0.9e12/0.01095, BRM2: 0.8e12/0.172,
   };
   const growth = {
     CNM2:0.12, USM2:0.055, EUM2:0.05, JPM2:0.03,
-    GBM2:0.05, KRM2:0.07,  CAM2:0.055,RUM2:0.12,
-    BRM2:0.13, MXM2:0.10,  INM2:0.12, SAM2:0.06,
-    IDM2:0.12, TRM2:0.20,  ZAM2:0.10, ARM2:0.40,
+    GBM2:0.05, CAM2:0.055, KRM2:0.07, RUM2:0.12,
+    BRM2:0.13,
   };
 
   TICKERS_INFO.forEach(info => {
