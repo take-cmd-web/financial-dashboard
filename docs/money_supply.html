@@ -381,9 +381,9 @@ body {
         <thead>
           <tr>
             <th>国 / 地域</th>
-            <th class="num">直近 (USD)</th>
-            <th class="num">前回 (USD)</th>
-            <th class="num">変化</th>
+            <th class="num">直近</th>
+            <th class="num">1年前</th>
+            <th class="num">前年比</th>
             <th class="cb-cell">表示</th>
           </tr>
         </thead>
@@ -750,17 +750,33 @@ function buildTable() {
   const tbody = document.getElementById('tableBody');
   tbody.innerHTML = '';
 
+  // 1年前の値を取得するヘルパー
+  function getOneYearAgo(pts) {
+    if (!pts || pts.length === 0) return null;
+    const last = pts[pts.length - 1];
+    const targetDate = new Date(last.x);
+    targetDate.setFullYear(targetDate.getFullYear() - 1);
+    // 12ヶ月前に最も近いデータを探す
+    let closest = null;
+    let minDiff = Infinity;
+    pts.forEach(pt => {
+      const diff = Math.abs(pt.x - targetDate);
+      if (diff < minDiff) { minDiff = diff; closest = pt; }
+    });
+    return closest?.y ?? null;
+  }
+
   // 合計行
   const gPts  = seriesUSD['GLOBAL'];
   const gLast = gPts[gPts.length-1];
-  const gPrev = gPts[gPts.length-2];
-  tbody.appendChild(makeTableRow('GLOBAL', '合計', '', GLOBAL_COLOR, gLast?.y, gPrev?.y));
+  const gPrevYear = getOneYearAgo(gPts);
+  tbody.appendChild(makeTableRow('GLOBAL', '合計', '', GLOBAL_COLOR, gLast?.y, gPrevYear));
 
   TICKERS_INFO.forEach((info, i) => {
     const pts  = seriesUSD[info.ticker];
     const last = pts[pts.length-1];
-    const prev = pts[pts.length-2];
-    tbody.appendChild(makeTableRow(info.ticker, info.label, info.ticker, COLORS[i+1], last?.y, prev?.y));
+    const prevYear = getOneYearAgo(pts);
+    tbody.appendChild(makeTableRow(info.ticker, info.label, info.ticker, COLORS[i+1], last?.y, prevYear));
   });
 
   document.getElementById('tableSection').style.display = 'block';
@@ -787,7 +803,7 @@ function makeTableRow(ticker, label, tickerBadge, color, latestVal, prevVal) {
       </div>
     </td>
     <td class="val-cell">${formatT(latestVal)}<span class="unit"> USD</span></td>
-    <td class="val-cell">${formatT(prevVal)}<span class="unit"> USD</span></td>
+    <td class="val-cell">${formatT(prevVal) !== "—" ? formatT(prevVal) : "—"}<span class="unit"> USD</span></td>
     <td class="change-cell ${chgClass}">${chgStr}</td>
     <td class="cb-cell">
       <div class="cb-wrap ${checked ? 'checked' : ''}" data-ticker="${ticker}">
