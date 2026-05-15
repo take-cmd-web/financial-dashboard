@@ -11,6 +11,7 @@ import yfinance as yf
 import pandas as pd
 
 SYMBOLS = {
+    "GSCI":         "^SPGSCI",
     "原油 (WTI)":   "CL=F",
     "天然ガス":     "NG=F",
     "金":           "GC=F",
